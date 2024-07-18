@@ -1,12 +1,24 @@
-import { configureStore } from "@reduxjs/toolkit";
+"use client";
+
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import sessionReducer from "@/app/stores/sessionSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { persistReducer } from "redux-persist";
+import storage from "./storage";
+
+const sessionPersistConfig = {
+    key: "root",
+    storage: storage,
+};
+
+const rootReducer = combineReducers({
+    session: persistReducer(sessionPersistConfig, sessionReducer),
+});
 
 export const store = configureStore({
-    reducer: {
-        session: sessionReducer,
-        
-    },
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({ serializableCheck: false }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

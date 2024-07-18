@@ -2,7 +2,9 @@
 
 import { Provider } from "react-redux";
 import { store } from "@/app/stores/store";
+import { persistStore } from "redux-persist";
 
+persistStore(store);
 export default function ReduxProvider({
     children,
 }: {
