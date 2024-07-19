@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
+import AudioPlayer from "@/components/AudioPlayer";
 
 const ReduxProvider = dynamic(() => import("@/app/stores/redux-provider"), {
     ssr: false,
@@ -26,6 +27,7 @@ export default async function RootLayout({
                 <ReduxProvider>
                     <Navbar />
                     {children}
+                    <AudioPlayer />
                 </ReduxProvider>
             </body>
         </html>

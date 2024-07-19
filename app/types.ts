@@ -8,3 +8,16 @@ export interface User {
 export interface Session {
     user: User | null;
 }
+
+export interface Song {
+    id: string;
+    name: string;
+    artist: string;
+    duration: number;
+}
+
+export interface Playlist {
+    id: string;
+    name: string;
+    songs: Song[] | null;
+}

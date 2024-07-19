@@ -2,6 +2,7 @@
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import sessionReducer from "@/app/stores/sessionSlice";
+import playlistReducer from "@/app/stores/playlistSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";
 import storage from "./storage";
@@ -13,6 +14,7 @@ const sessionPersistConfig = {
 
 const rootReducer = combineReducers({
     session: persistReducer(sessionPersistConfig, sessionReducer),
+    playlist: persistReducer(sessionPersistConfig, playlistReducer),
 });
 
 export const store = configureStore({

@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Session, User } from "@/app/types";
 
-const SET_USER = "SET_USER";
-
 const initialUser: User = {
     id: "",
     userName: "",
@@ -14,13 +12,6 @@ const initialUser: User = {
 const initialState: Session = {
     user: initialUser,
 };
-
-export function setUser2(user: User) {
-    return {
-        type: SET_USER,
-        payload: { user },
-    };
-}
 
 export const sessionSlice = createSlice({
     name: "session",
