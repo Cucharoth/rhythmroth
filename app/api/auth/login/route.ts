@@ -26,6 +26,7 @@ export const POST = async (request: NextRequest) => {
         id: newUser.id,
         userName: newUser.userName,
         email: newUser.email,
+        profileImg: newUser.profileImg,
     });
 
     try {

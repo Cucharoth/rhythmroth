@@ -48,6 +48,8 @@ const login = () => {
                 const user: User = await response.json();
                 dispatch(setUser(user));
                 router.push("/");
+            } else {
+                console.error("error: ",response.statusText);
             }
         } catch (error: any) {
             console.error("error: ", error.message);

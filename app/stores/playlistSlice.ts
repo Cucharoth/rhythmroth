@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Playlist, Session, Song, User } from "@/app/types";
+import { Playlist, Song } from "@/app/types";
 
 const playlist: Playlist = {
     id: "",

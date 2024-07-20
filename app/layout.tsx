@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { NextUIProvider } from "@nextui-org/react";
 import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
 import AudioPlayer from "@/components/AudioPlayer";
+import Playlist from "@/components/playlist";
 
 const ReduxProvider = dynamic(() => import("@/app/stores/redux-provider"), {
     ssr: false,
@@ -26,7 +28,10 @@ export default async function RootLayout({
             <body className={inter.className}>
                 <ReduxProvider>
                     <Navbar />
-                    {children}
+                    <main className="flex justify-between">
+                        <main className="w-full p-4">{children}</main>
+                        <Playlist />
+                    </main>
                     <AudioPlayer />
                 </ReduxProvider>
             </body>

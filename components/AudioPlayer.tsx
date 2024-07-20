@@ -12,7 +12,7 @@ const playList = [
         id: 1,
     },
     {
-        name: "マンネリウィークエンド feat.花譜＂",
+        name: "マンネリウィークエンド feat.花譜",
         writer: "FAKE TYPE",
         img: "favicon.ico",
         src: "/assets/songs/FAKE TYPE. ＂マンネリウィークエンド feat.花譜＂ MV.mp3",
