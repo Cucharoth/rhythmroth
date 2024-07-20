@@ -10,7 +10,7 @@ const playlist: Playlist = {
 
 const initialState = {
     playlist,
-    currentSongId: "",
+    currentSongId: 0,
 };
 
 export const playlistSlice = createSlice({
@@ -20,9 +20,12 @@ export const playlistSlice = createSlice({
         addSong(state, action: PayloadAction<Song>) {
             state.playlist.songs?.push(action.payload);
         },
+        setCurrentSongId(state, action: PayloadAction<number>) {
+            state.currentSongId = action.payload;
+        },
     },
 });
 
-export const { addSong } = playlistSlice.actions;
+export const { addSong, setCurrentSongId } = playlistSlice.actions;
 
 export default playlistSlice.reducer;

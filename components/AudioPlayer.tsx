@@ -1,15 +1,21 @@
 "use client";
 
-import AudioPlayer from "react-modern-audio-player";
-import AudioPlayerSideBar from "@/components/AudioPlayerSideBar";
+import AudioPlayer, {
+    InterfacePlacement,
+    PlayList,
+} from "react-modern-audio-player";
+import AudioPlayerInfo from "@/components/AudioPlayerInfo";
+import { useAppSelector } from "@/app/stores/store";
+import { PlaylistSong, Song } from "@/app/types";
+import { useEffect, useState } from "react";
 
-const playList = [
+let playlist2: PlayList = [
     {
+        src: "https://dl.dropbox.com/scl/fi/9valmig4pub72gw2zp7n3/Eurobeat-Spirited-Away-A-One.mp3?rlkey=pdmx4ozlp585vuizvytk0zre8&st=x4s3mu77",
+        id: 1,
         name: "name",
         writer: "writer",
         img: "favicon.ico",
-        src: "https://dl.dropbox.com/scl/fi/9valmig4pub72gw2zp7n3/Eurobeat-Spirited-Away-A-One.mp3?rlkey=pdmx4ozlp585vuizvytk0zre8&st=x4s3mu77",
-        id: 1,
     },
     {
         name: "マンネリウィークエンド feat.花譜",
@@ -34,7 +40,7 @@ const customInterfacePlacement = {
     },
 };
 
-const defaultInterfacePlacement = {
+const defaultInterfacePlacement: InterfacePlacement = {
     templateArea: {
         artwork: "row1-1",
         trackInfo: "row1-2",
@@ -48,13 +54,60 @@ const defaultInterfacePlacement = {
     },
 };
 
+const currentPlaylist: PlayList = [
+    {
+        name: "マンネリウィークエンド feat.花譜",
+        writer: "FAKE TYPE",
+        img: "favicon.ico",
+        src: "/assets/songs/FAKE TYPE. ＂マンネリウィークエンド feat.花譜＂ MV.mp3",
+        id: 1,
+    },
+];
+
 const Player = () => {
+    const songs: Song[] | null = useAppSelector(
+        (state) => state.playlist.playlist.songs
+    );
+    let currentPlaylist: PlayList = [];
+    if (songs) {
+        currentPlaylist = songs?.map((song: Song) => ({
+            name: song.name,
+            writer: song.artist,
+            img: "favicon.ico", //TODO: FIX SONG IMAGE
+            src: song.src,
+            id: song.playlistId,
+        }));
+    }
+
+    const [playlist, setPlaylist] = useState<PlayList>(currentPlaylist);
+
+    useEffect(() => {
+        if (songs && songs.length > 0 && songs.length != playlist.length) {
+            const lastSong = songs[songs?.length - 1];
+            const newPlaylistSong: PlaylistSong = {
+                id: lastSong.playlistId,
+                name: lastSong.name,
+                writer: lastSong.artist,
+                img: "favicon.ico",
+                src: lastSong.src,
+            };
+            setPlaylist([...playlist, newPlaylistSong]);
+        }
+
+        return () => {
+            console.log("UNMOUNTED");
+        };
+    }, [songs]);
+
+    if (playlist == undefined || playlist == null) {
+        console.log("PLAYLIST UNDEFINED");
+    }
     return (
         <AudioPlayer
-            playList={playList}
+            playList={playlist}
             activeUI={{
                 all: true,
-                progress: "waveform",
+                progress: "bar",
             }}
             placement={{
                 player: "bottom",
@@ -64,7 +117,7 @@ const Player = () => {
             }}
         >
             <AudioPlayer.CustomComponent id="playerCustomComponent">
-                <AudioPlayerSideBar />
+                <AudioPlayerInfo />
             </AudioPlayer.CustomComponent>
         </AudioPlayer>
     );
