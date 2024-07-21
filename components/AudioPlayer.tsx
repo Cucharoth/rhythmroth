@@ -4,28 +4,10 @@ import AudioPlayer, {
     InterfacePlacement,
     PlayList,
 } from "react-modern-audio-player";
-import AudioPlayerInfo from "@/components/AudioPlayerInfo";
+import AudioPlayerInfo from "./AudioPlayerInfo";
 import { useAppSelector } from "@/app/stores/store";
 import { PlaylistSong, Song } from "@/app/types";
 import { useEffect, useState } from "react";
-import { button } from "@nextui-org/react";
-
-let playlist2: PlayList = [
-    {
-        src: "https://dl.dropbox.com/scl/fi/9valmig4pub72gw2zp7n3/Eurobeat-Spirited-Away-A-One.mp3?rlkey=pdmx4ozlp585vuizvytk0zre8&st=x4s3mu77",
-        id: 1,
-        name: "name",
-        writer: "writer",
-        img: "favicon.ico",
-    },
-    {
-        name: "マンネリウィークエンド feat.花譜",
-        writer: "FAKE TYPE",
-        img: "favicon.ico",
-        src: "/assets/songs/FAKE TYPE. ＂マンネリウィークエンド feat.花譜＂ MV.mp3",
-        id: 2,
-    },
-];
 
 const customInterfacePlacement = {
     templateArea: {
@@ -55,16 +37,6 @@ const defaultInterfacePlacement: InterfacePlacement = {
     },
 };
 
-const currentPlaylist: PlayList = [
-    {
-        name: "マンネリウィークエンド feat.花譜",
-        writer: "FAKE TYPE",
-        img: "favicon.ico",
-        src: "/assets/songs/FAKE TYPE. ＂マンネリウィークエンド feat.花譜＂ MV.mp3",
-        id: 1,
-    },
-];
-
 const Player = () => {
     const songs: Song[] | null = useAppSelector(
         (state) => state.playlist.playlist.songs
@@ -93,7 +65,7 @@ const Player = () => {
 
     //handles changes on store playlist
     useEffect(() => {
-        // add song to Player playlist
+        // adds song to Player playlist
         if (songs && songs.length > 0 && songs.length > playlist.length) {
             const lastSong = songs[songs?.length - 1];
             const newPlaylistSong: PlaylistSong = {
@@ -104,7 +76,8 @@ const Player = () => {
                 src: lastSong.src,
             };
             setPlaylist([...playlist, newPlaylistSong]);
-            // remove song from Player playlist
+
+        // removes song from Player playlist
         } else if (
             songs &&
             songs.length > 0 &&
@@ -113,13 +86,9 @@ const Player = () => {
             const lastRemovedIndex = lastRemovedPlaylistId - 1;
             playlist.splice(lastRemovedIndex, 1);
         }
-
-        return () => {
-            console.log("UNMOUNTED");
-        };
     }, [songs]);
 
-    // handles changes on the current song 
+    // handles changes on the current song
     useEffect(() => {
         if (selectedSongPlaylistId) {
             setCurPlayId(selectedSongPlaylistId);
@@ -130,32 +99,27 @@ const Player = () => {
         console.log("PLAYLIST UNDEFINED");
     }
     return (
-        <>
-            <button className="flex mb-20" onClick={() => setCurPlayId(3)}>
-                click {curPlayId}
-            </button>
-            <AudioPlayer
-                playList={playlist}
-                audioInitialState={{
-                    volume: 0.7,
-                    curPlayId: curPlayId,
-                }}
-                activeUI={{
-                    all: true,
-                    progress: "bar",
-                }}
-                placement={{
-                    player: "bottom",
-                    playList: "top",
-                    volumeSlider: "right",
-                    interface: defaultInterfacePlacement,
-                }}
-            >
-                <AudioPlayer.CustomComponent id="playerCustomComponent">
-                    <AudioPlayerInfo />
-                </AudioPlayer.CustomComponent>
-            </AudioPlayer>
-        </>
+        <AudioPlayer
+            playList={playlist}
+            audioInitialState={{
+                volume: 0.7,
+                curPlayId: curPlayId,
+            }}
+            activeUI={{
+                all: true,
+                progress: "bar",
+            }}
+            placement={{
+                player: "bottom",
+                playList: "top",
+                volumeSlider: "top",
+                interface: defaultInterfacePlacement,
+            }}
+        >
+            <AudioPlayer.CustomComponent id="playerCustomComponent">
+                <AudioPlayerInfo />
+            </AudioPlayer.CustomComponent>
+        </AudioPlayer>
     );
 };
 

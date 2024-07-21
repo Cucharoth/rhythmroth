@@ -24,7 +24,9 @@ const NavbarComponent = () => {
     const user = useAppSelector((state) => state.session.user);
 
     return (
-        <Navbar>
+        <Navbar
+            className="bg-primary-200"
+            >
             <NavbarBrand>LOGO</NavbarBrand>
             <NavbarContent
                 className="hidden sm:flex flex-1 gap-4"

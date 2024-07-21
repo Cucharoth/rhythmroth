@@ -5,7 +5,7 @@ import { NextUIProvider } from "@nextui-org/react";
 import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
 import AudioPlayer from "@/components/AudioPlayer";
-import Playlist from "@/components/playlist";
+import Playlist from "@/components/Playlist";
 
 const ReduxProvider = dynamic(() => import("@/app/stores/redux-provider"), {
     ssr: false,
@@ -25,10 +25,10 @@ export default async function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={`purple-theme ${inter.className}`}>
                 <ReduxProvider>
                     <Navbar />
-                    <main className="flex justify-between">
+                    <main className="bg-gradient-to-tr from-accent-300 to-background-900 to-90% text-white flex justify-between">
                         <main className="w-full p-4">{children}</main>
                         <Playlist />
                     </main>
