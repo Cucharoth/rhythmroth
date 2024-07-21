@@ -8,6 +8,7 @@ import AudioPlayerInfo from "@/components/AudioPlayerInfo";
 import { useAppSelector } from "@/app/stores/store";
 import { PlaylistSong, Song } from "@/app/types";
 import { useEffect, useState } from "react";
+import { button } from "@nextui-org/react";
 
 let playlist2: PlayList = [
     {
@@ -68,7 +69,15 @@ const Player = () => {
     const songs: Song[] | null = useAppSelector(
         (state) => state.playlist.playlist.songs
     );
+    const lastRemovedPlaylistId = useAppSelector(
+        (state) => state.playlist.lastRemovedPlaylistId
+    );
+    const selectedSongPlaylistId = useAppSelector(
+        (state) => state.playlist.selectedSongPlaylistId
+    );
     let currentPlaylist: PlayList = [];
+
+    // maps the store playlist to a Player playlist.
     if (songs) {
         currentPlaylist = songs?.map((song: Song) => ({
             name: song.name,
@@ -78,11 +87,14 @@ const Player = () => {
             id: song.playlistId,
         }));
     }
-
+    // sets the initials value that will be used for the Player on load.
     const [playlist, setPlaylist] = useState<PlayList>(currentPlaylist);
+    const [curPlayId, setCurPlayId] = useState(selectedSongPlaylistId);
 
+    //handles changes on store playlist
     useEffect(() => {
-        if (songs && songs.length > 0 && songs.length != playlist.length) {
+        // add song to Player playlist
+        if (songs && songs.length > 0 && songs.length > playlist.length) {
             const lastSong = songs[songs?.length - 1];
             const newPlaylistSong: PlaylistSong = {
                 id: lastSong.playlistId,
@@ -92,6 +104,14 @@ const Player = () => {
                 src: lastSong.src,
             };
             setPlaylist([...playlist, newPlaylistSong]);
+            // remove song from Player playlist
+        } else if (
+            songs &&
+            songs.length > 0 &&
+            songs.length < playlist.length
+        ) {
+            const lastRemovedIndex = lastRemovedPlaylistId - 1;
+            playlist.splice(lastRemovedIndex, 1);
         }
 
         return () => {
@@ -99,27 +119,43 @@ const Player = () => {
         };
     }, [songs]);
 
+    // handles changes on the current song 
+    useEffect(() => {
+        if (selectedSongPlaylistId) {
+            setCurPlayId(selectedSongPlaylistId);
+        }
+    }, [selectedSongPlaylistId]);
+
     if (playlist == undefined || playlist == null) {
         console.log("PLAYLIST UNDEFINED");
     }
     return (
-        <AudioPlayer
-            playList={playlist}
-            activeUI={{
-                all: true,
-                progress: "bar",
-            }}
-            placement={{
-                player: "bottom",
-                playList: "top",
-                volumeSlider: "right",
-                interface: defaultInterfacePlacement,
-            }}
-        >
-            <AudioPlayer.CustomComponent id="playerCustomComponent">
-                <AudioPlayerInfo />
-            </AudioPlayer.CustomComponent>
-        </AudioPlayer>
+        <>
+            <button className="flex mb-20" onClick={() => setCurPlayId(3)}>
+                click {curPlayId}
+            </button>
+            <AudioPlayer
+                playList={playlist}
+                audioInitialState={{
+                    volume: 0.7,
+                    curPlayId: curPlayId,
+                }}
+                activeUI={{
+                    all: true,
+                    progress: "bar",
+                }}
+                placement={{
+                    player: "bottom",
+                    playList: "top",
+                    volumeSlider: "right",
+                    interface: defaultInterfacePlacement,
+                }}
+            >
+                <AudioPlayer.CustomComponent id="playerCustomComponent">
+                    <AudioPlayerInfo />
+                </AudioPlayer.CustomComponent>
+            </AudioPlayer>
+        </>
     );
 };
 

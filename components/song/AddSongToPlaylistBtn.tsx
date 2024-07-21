@@ -40,7 +40,6 @@ const AddSongToPlaylistBtn = () => {
 
     const handleAddSongClick = (song: Song) => {
         if (playlistLength != undefined) {
-            console.log("inside");
             song.playlistId = playlistLength + 1;
             dispatch(addSong(song));
         }
