@@ -7,11 +7,12 @@ import {
     setSelectedSongPlaylistId,
 } from "@/app/stores/playlistSlice";
 import { Song } from "@/app/types";
-import { button, Button } from "@nextui-org/react";
+import { button, Button, Divider } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faArrowLeft,
     faArrowRight,
+    faList,
     faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import RemoveSongFromPlaylistBtn from "./song/RemoveSongFromPlaylistBtn";
@@ -45,19 +46,21 @@ const playlist = () => {
     const PlaylistOpen = () => {
         return (
             <div className="transition-all">
-                <h2 className="text-lg px-2 text-primary-foreground font-bold transition-all">
-                    Playlist
-                </h2>
-                {playlist.name != "" && (
+                {playlist.name != "" ? (
                     <h2 className="text-lg px-2 font-bold mb-4">
                         {playlist.name}
                     </h2>
+                ) : (
+                    <h2 className="text-lg px-2 text-primary-foreground font-bold transition-all">
+                        Playlist
+                    </h2>
                 )}
                 <ul>
+                    <Divider className="mt-2 mb-4" />
                     {songs?.map((song: Song) => (
                         <li className="transition-all" key={song.id}>
                             <div
-                                className={`flex justify-between group px-2 hover:bg-accent-200 hover:bg-opacity-20 rounded-md 
+                                className={`flex justify-between group px-2 hover:bg-accent-200 hover:bg-opacity-20 rounded-md transition-colors
                                     ${
                                         song.playlistId ==
                                             currentSongPlaylistId &&
@@ -72,7 +75,7 @@ const playlist = () => {
                                         ${
                                             song.playlistId ==
                                                 currentSongPlaylistId &&
-                                            "text-background-950 transition-all"
+                                            "text-accent-900 transition-all"
                                         }`}
                                     onClick={() =>
                                         handleSongPlaylistClick(song)
@@ -114,7 +117,7 @@ const playlist = () => {
                 size="sm"
                 isIconOnly
                 radius="full"
-                className=" mb-3 px-2 bg-gradient-to-tr from-accent to-accent-300 text-white shadow-lg"
+                className=" mb-3 px-2 mx-2 bg-gradient-to-tr from-accent to-accent-300 text-white shadow-lg"
                 onPress={() => dispatch(setIsOpen(!isPlaylistOpen))}
             >
                 {isPlaylistOpen ? (
@@ -127,8 +130,10 @@ const playlist = () => {
                 <PlaylistOpen />
             ) : (
                 <>
-                    {isPlaylistOpen && (
+                    {isPlaylistOpen ? (
                         <Button variant="light" isLoading></Button>
+                    ) : (
+                        <FontAwesomeIcon icon={faList} size="xl" />
                     )}
                 </>
             )}

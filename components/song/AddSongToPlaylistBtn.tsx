@@ -3,6 +3,8 @@
 import { addSong } from "@/app/stores/playlistSlice";
 import { useAppDispatch, useAppSelector } from "@/app/stores/store";
 import { Song } from "@/app/types";
+import { faList, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
 import React from "react";
 
@@ -41,14 +43,21 @@ const AddSongToPlaylistBtn = () => {
     const handleAddSongClick = (song: Song) => {
         if (playlistLength != undefined) {
             song.playlistId = playlistLength + 1;
-            dispatch(addSong(song));
+            //dispatch(addSong(song));
         }
     };
 
     return (
         <div>
-            <Button onPress={() => handleAddSongClick(song3)}>
-                ADD TO PLAYLIST
+            <Button
+                onPress={() => handleAddSongClick(song3)}
+                variant="shadow"
+                className="bg-gradient-to-tr from-bg-accent-300 via-primary-300 to-primary-200 text-background-950 border rounded-full"
+            >
+                <p>add to playlist</p>
+                <div className="mb-[1px]">
+                    <FontAwesomeIcon icon={faPlus} />
+                </div>
             </Button>
         </div>
     );

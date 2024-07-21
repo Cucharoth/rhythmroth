@@ -25,7 +25,8 @@ const NavbarComponent = () => {
 
     return (
         <Navbar
-            className="bg-primary-200"
+            className="flex grow bg-primary-200 px-20"
+            maxWidth="full"
             >
             <NavbarBrand>LOGO</NavbarBrand>
             <NavbarContent

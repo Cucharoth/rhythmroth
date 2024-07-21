@@ -29,7 +29,7 @@ export default async function RootLayout({
                 <ReduxProvider>
                     <Navbar />
                     <main className="bg-gradient-to-tr from-accent-300 to-background-900 to-90% text-white flex justify-between">
-                        <main className="w-full p-4">{children}</main>
+                        <div className="w-full p-4">{children}</div>
                         <Playlist />
                     </main>
                     <AudioPlayer />
