@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import AddSongToPlaylistBtn from "@/components/song/AddSongToPlaylistBtn";
 import { commonColors, semanticColors } from "@nextui-org/theme";
@@ -10,21 +12,27 @@ import {
     Divider,
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/image";
-import { faList } from "@fortawesome/free-solid-svg-icons";
+import { faList, faReply } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 
 const songPage = ({ params }) => {
+    const router = useRouter();
+    const handle = () => {
+        router.back();
+    };
     return (
         <div className="flex grow w-full justify-center items-center min-h-[590px]">
-            {/* <p>song id: {params.id}</p>
-            <AddSongToPlaylistBtn /> */}
-
             <Card
                 className="border-none min-h-full bg-opacity-0"
                 shadow="none"
                 fullWidth
             >
-                <CardHeader className="mx-10"></CardHeader>
+                <CardHeader className="mx-10">
+                    <Button variant="faded" className="rounded-full bg-primary-200 text-black" onPress={() => router.back()}>
+                        <FontAwesomeIcon icon={faReply} size="xl"/>
+                    </Button>
+                </CardHeader>
                 <CardBody>
                     <div className="grid grid-cols-4 md:grid-cols-12 p-10 items-center justify-center">
                         <div className=" flex justify-center items-center col-span-6 md:col-span-5">

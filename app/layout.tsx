@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
 import AudioPlayer from "@/components/AudioPlayer";
 import Playlist from "@/components/Playlist";
+import TabsSidebar from "@/components/TabsSidebar";
 
 const ReduxProvider = dynamic(() => import("@/app/stores/redux-provider"), {
     ssr: false,
@@ -29,6 +30,7 @@ export default async function RootLayout({
                 <ReduxProvider>
                     <Navbar />
                     <main className="bg-gradient-to-tr from-accent-300 to-background-900 to-90% text-white flex justify-between">
+                        <TabsSidebar />
                         <div className="w-full p-4">{children}</div>
                         <Playlist />
                     </main>

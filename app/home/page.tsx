@@ -6,6 +6,7 @@ import { Song } from "../types";
 import { useAppDispatch } from "../stores/store";
 import { addSong } from "../stores/playlistSlice";
 import { useRouter } from "next/navigation";
+import { Carousel } from "@/components/ui/carousel";
 
 const home = () => {
     const router = useRouter();
