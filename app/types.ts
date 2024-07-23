@@ -10,12 +10,13 @@ export interface Session {
 }
 
 export interface Song {
-    id: string;
+    id: number;
     playlistId: number;
     name: string;
     artist: string;
     src: string;
-    duration: number;
+    duration: string;
+    coverSrc: string;
 }
 
 export interface PlaylistSong {
