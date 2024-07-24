@@ -31,13 +31,13 @@ const TabsSidebar = () => {
                 </Button>
                 <Button
                     onPress={() => router.push("/home/playlist")}
-                    className="my-1 justify-between bg-opacity-0 hover:bg-accent-200 hover:bg-opacity-50"
+                    className="my-1 justify-start bg-opacity-0 hover:bg-accent-200 hover:bg-opacity-50"
                 >
                     <div className="max-w-4 min-w-4 mt-[2px] text-background-950">
                         <FontAwesomeIcon icon={faList} />
                     </div>
                     <Divider orientation="vertical" className="bg-black" />
-                    <h2 className="mt-[1.5px] font-semibold text-background-950">
+                    <h2 className="basis-[5/6] mt-[1.5px] font-semibold text-background-950">
                         PLAYLIST
                     </h2>
                 </Button>

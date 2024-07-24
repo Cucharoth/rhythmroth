@@ -7,6 +7,8 @@ export interface User {
 
 export interface Session {
     user: User | null;
+    recentlyPlayed: Song[];
+    fetchedSongs: Song[];
 }
 
 export interface Song {

@@ -14,6 +14,7 @@ const initialState = {
     isOpen: false,
     lastRemovedPlaylistId: 0,
     selectedSongPlaylistId: 0,
+    isPaused: false,
 };
 
 export const playlistSlice = createSlice({
@@ -27,7 +28,6 @@ export const playlistSlice = createSlice({
             const currentSongIndex = state.playlist.songs?.findIndex(
                 (song) => song.playlistId == action.payload.playlistId
             )!;
-            console.log(currentSongIndex);
             state.playlist.songs?.splice(currentSongIndex, 1);
             state.lastRemovedPlaylistId = action.payload.playlistId;
         },
@@ -40,6 +40,9 @@ export const playlistSlice = createSlice({
         setIsOpen(state, action: PayloadAction<boolean>) {
             state.isOpen = action.payload;
         },
+        setIsPaused(state, action: PayloadAction<boolean>) {
+            state.isPaused = action.payload;
+        },
     },
 });
 
@@ -49,6 +52,7 @@ export const {
     setSelectedSongPlaylistId,
     setIsOpen,
     removeSong,
+    setIsPaused,
 } = playlistSlice.actions;
 
 export default playlistSlice.reducer;

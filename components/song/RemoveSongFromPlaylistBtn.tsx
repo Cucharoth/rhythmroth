@@ -19,7 +19,7 @@ const RemoveSongFromPlaylistBtn = (props: { song: Song }) => {
     };
 
     return (
-        <div className="transition-all min-w-[45px] min-h-[45px] group">
+        <div className="transition-all min-w-[40px] min-h-[40px] group">
             <Button
                 onPress={() => handleRemoveSongClick()}
                 isIconOnly

@@ -16,10 +16,14 @@ import {
     faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import RemoveSongFromPlaylistBtn from "./song/RemoveSongFromPlaylistBtn";
+import { Image } from "@nextui-org/image";
 
 const playlist = () => {
     const dispatch = useAppDispatch();
     const isPlaylistOpen = useAppSelector((state) => state.playlist.isOpen);
+    const [isPaused, setIsPaused] = useState(
+        useAppSelector((state) => state.playlist.isPaused)
+    );
     const [showPlaylistOpen, setShowPlaylistOpen] = useState(false);
     const playlist = useAppSelector((state) => state.playlist.playlist);
     const currentSongPlaylistId = useAppSelector(
@@ -57,51 +61,64 @@ const playlist = () => {
                 )}
                 <ul>
                     <Divider className="mt-2 mb-4" />
-                    {songs?.map((song: Song) => (
-                        <li className="transition-all" key={song.id}>
-                            <div
-                                className={`flex justify-between group px-2 hover:bg-accent-200 hover:bg-opacity-20 rounded-md transition-colors
+                    {songs?.length == 0 ? (
+                        <p className="text-center text-primary-foreground">
+                            add some songs~
+                        </p>
+                    ) : (
+                        <>
+                            {songs?.map((song: Song) => (
+                                <li className="transition-all" key={song.id}>
+                                    <div
+                                        className={`flex justify-between items-center group px-2 hover:bg-accent-200 hover:bg-opacity-20 rounded-md transition-colors
                                     ${
                                         song.playlistId ==
                                             currentSongPlaylistId &&
                                         "bg-accent-300 hover:bg-accent-300"
                                     }
                                 `}
-                            >
-                                <button
-                                    key={song.id}
-                                    className={`flex-grow justify-start text-left overflow-hidden cursor-pointer transition-all text-primary-foreground
+                                    >
+                                        <Image
+                                            loading="lazy"
+                                            removeWrapper
+                                            className="mt-[3px] mr-2 rounded-full"
+                                            src={song.coverSrc}
+                                            alt="Card background"
+                                            width={35}
+                                            height={35}
+                                        ></Image>
+                                        <button
+                                            className={`flex-grow justify-start text-sm text-left whitespace-nowrap text-ellipsis overflow-hidden cursor-pointer transition-all text-primary-foreground
                                         
-                                        ${
-                                            song.playlistId ==
-                                                currentSongPlaylistId &&
-                                            "text-accent-900 transition-all"
-                                        }`}
-                                    onClick={() =>
-                                        handleSongPlaylistClick(song)
-                                    }
-                                >
-                                    {song.name}
-                                </button>
-                                <div
-                                    className={`flex justify-center text-primary-foreground items-center min-w-[45px] min-h-[45px]`}
-                                >
-                                    {song.playlistId !=
-                                    currentSongPlaylistId ? (
-                                        <RemoveSongFromPlaylistBtn
-                                            song={song}
-                                        />
-                                    ) : (
-                                        <FontAwesomeIcon
-                                            style={{ color: "#000" }}
-                                            icon={faPlay}
-                                            beat
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </li>
-                    ))}
+                                        `}
+                                            onClick={() =>
+                                                handleSongPlaylistClick(song)
+                                            }
+                                        >
+                                            <div className="pt-[2px]">
+                                                <p
+                                                    className={`${
+                                                        song.playlistId ==
+                                                            currentSongPlaylistId &&
+                                                        "text-background-950"
+                                                    }`}
+                                                >
+                                                    {song.name}
+                                                </p>
+                                            </div>
+                                        </button>
+                                        <div
+                                            className={`flex justify-center text-primary-foreground items-center min-w-[40px] min-h-[40px]`}
+                                        >
+                                            <RemoveSongFromPlaylistBtn
+                                                song={song}
+                                            />
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </>
+                    )}
                 </ul>
             </div>
         );
@@ -110,7 +127,7 @@ const playlist = () => {
     return (
         <div
             className={`flex flex-col w-full transition-all sticky right-0 p-3 border-l border-gray-300 ${
-                isPlaylistOpen ? "basis-1/5 max-w-[20%]" : "basis-[3%]"
+                isPlaylistOpen ? "w-[30%] max-w-[370px]" : "w-[5%]"
             }`}
         >
             <Button
