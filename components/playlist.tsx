@@ -126,7 +126,7 @@ const playlist = () => {
 
     return (
         <div
-            className={`flex flex-col w-full transition-all sticky right-0 p-3 border-l border-gray-300 ${
+            className={`hidden xl:flex xl:visible flex-col w-full transition-all sticky right-0 p-3 border-l border-gray-300 ${
                 isPlaylistOpen ? "w-[30%] max-w-[370px]" : "w-[5%]"
             }`}
         >

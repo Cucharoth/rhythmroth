@@ -46,18 +46,18 @@ const AudioPlayerInfo = ({
     //console.log(audioPlayerState?.playList);
 
     return (
-        <div className="flex min-w-[315px] max-w-[315px]">
+        <div className="flex justify-start mt-[2px] md:mt-0 md:min-w-[315px] max-w-[315px]">
             <Image
                 isBlurred
                 src={currentSong?.img}
                 alt="cover image"
-                className="z-10 mr-5"
+                className="z-10 mt-[3px] md:mt-0 mr-5"
                 width={45}
                 height={45}
             ></Image>
-            <div className="mx-3 whitespace-nowrap text-ellipsis overflow-hidden">
+            <div className="mx-3  whitespace-nowrap text-ellipsis overflow-hidden">
                 <div>
-                    <p>{currentSong?.name}</p>
+                    <p className="text-[5px]">{currentSong?.name}</p>
                 </div>
                 <div>
                     <p>{currentSong?.writer}</p>

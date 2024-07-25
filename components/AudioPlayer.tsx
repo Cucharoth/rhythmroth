@@ -1,6 +1,7 @@
 "use client";
 
 import AudioPlayer, {
+    ActiveUI,
     InterfacePlacement,
     PlayList,
 } from "react-modern-audio-player";
@@ -18,6 +19,8 @@ const defaultSong = {
     id: 1,
 };
 
+const interfacePlacement: InterfacePlacement[] = [];
+const activeUI: ActiveUI[] = [];
 const customInterfacePlacement: InterfacePlacement = {
     templateArea: {
         trackInfo: "row1-2",
@@ -33,6 +36,19 @@ const customInterfacePlacement: InterfacePlacement = {
         playerCustomComponent: "row1-2",
     } as InterfacePlacement<11>,
 };
+interfacePlacement.push(customInterfacePlacement);
+
+const smallInterfacePlacement: InterfacePlacement = {
+    templateArea: {
+        progress: "row1-2",
+        playButton: "row2-2",
+        volume: "row2-3",
+    },
+    customComponentsArea: {
+        playerCustomComponent: "row2-1",
+    } as InterfacePlacement<11>,
+};
+interfacePlacement.push(smallInterfacePlacement);
 
 const defaultInterfacePlacement: InterfacePlacement = {
     templateArea: {
@@ -47,6 +63,29 @@ const defaultInterfacePlacement: InterfacePlacement = {
         playList: "row1-8",
     },
 };
+
+const defaultActiveUi: ActiveUI = {
+    playButton: true,
+    playList: false,
+    prevNnext: true,
+    volume: true,
+    volumeSlider: true,
+    repeatType: true,
+    trackTime: true,
+    trackInfo: false,
+    artwork: false,
+    progress: "bar",
+};
+activeUI.push(defaultActiveUi);
+
+const smallActiveUi: ActiveUI = {
+    playButton: true,
+    playList: "unSortable",
+    prevNnext: true,
+    volume: true,
+    progress: "bar",
+};
+activeUI.push(smallActiveUi);
 
 const Player = () => {
     const songs: Song[] | null = useAppSelector(
@@ -139,31 +178,49 @@ const Player = () => {
         return newPlaylistSong;
     };
 
+    // workaround for resizing Player on demand
+    const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+    const [screenHeight, setScreenHeight] = useState<number>(
+        window.innerHeight
+    );
+    const [uiIndexValue, setUiIndexValue] = useState<number>(0);
+
+    const updateScreenDimensions = () => {
+        setScreenWidth(window.innerWidth);
+        setScreenHeight(window.innerHeight);
+    };
+
+    // sets up the event listener
+    useEffect(() => {
+        window.addEventListener("resize", updateScreenDimensions);
+        // Cleanup event listener on component unmount
+        return () => {
+            window.removeEventListener("resize", updateScreenDimensions);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (screenWidth < 640) {
+            setUiIndexValue(1);
+        } else {
+            setUiIndexValue(0);
+        }
+    }, [screenWidth]);
+
     return (
         <div className="z-20">
             <AudioPlayer
                 playList={playlist}
                 audioInitialState={{
-                    volume: 0.7,
+                    volume: 0.6,
                     curPlayId: curPlayId,
                 }}
-                activeUI={{
-                    playButton: true,
-                    playList: false,
-                    prevNnext: true,
-                    volume: true,
-                    volumeSlider: true,
-                    repeatType: true,
-                    trackTime: true,
-                    trackInfo: false,
-                    artwork: false,
-                    progress: "bar",
-                }}
+                activeUI={activeUI[uiIndexValue]}
                 placement={{
                     player: "bottom",
                     playList: "top",
                     volumeSlider: "top",
-                    interface: customInterfacePlacement,
+                    interface: interfacePlacement[uiIndexValue],
                 }}
             >
                 <AudioPlayer.CustomComponent id="playerCustomComponent">

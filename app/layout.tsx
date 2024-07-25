@@ -29,14 +29,16 @@ export default async function RootLayout({
         <html lang="en">
             <body className={`purple-theme ${inter.className}`}>
                 <ReduxProvider>
-                    <Navbar />
-                    <main className="bg-gradient-to-tr from-accent-300 to-background-900 to-90% text-white flex justify-between">
-                        <TabsSidebar />
-                        <div className="w-full p-4">{children}</div>
+                    <div className="flex flex-col min-h-screen">
+                        <Navbar />
+                        <main className="bg-gradient-to-tr from-accent-300 to-background-900 to-90% text-white flex justify-between flex-grow max-h-[full-300px]">
+                            <TabsSidebar />
+                            <div className="w-full p-4">{children}</div>
 
-                        <Playlist />
-                    </main>
-                    <AudioPlayer />
+                            <Playlist />
+                        </main>
+                        <AudioPlayer />
+                    </div>
                 </ReduxProvider>
             </body>
         </html>

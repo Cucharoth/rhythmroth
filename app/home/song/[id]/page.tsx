@@ -78,7 +78,7 @@ const songPage = ({ params } : {params: { id: number}}) => {
                                 ></Image>
                             </div>
 
-                            <div className="flex flex-col col-span-6 md:col-span-7 bg-primary-200 bg-opacity-0  border-spacing-0 p-5 rounded-lg">
+                            <div className="flex flex-col col-span-6 md:col-span-7 bg-primary-200 bg-opacity-0 py-5 border-spacing-0 rounded-lg md:p-5">
                                 <div className="flex items-start">
                                     <div className="flex grow flex-col gap-0">
                                         <h2 className="font-semibold text-large text-foreground/100">
@@ -94,14 +94,14 @@ const songPage = ({ params } : {params: { id: number}}) => {
                                     </div>
                                 </div>
                                 <Divider className="my-2" />
-                                <div className="flex flex-col mt-3 gap-1">
-                                    <div className="flex flex-row">
+                                <div className="flex mt-3 gap-1">
+                                    <div className="flex flex-col md:flex-row">
                                         <div className="mr-2">
                                             <AddSongToPlaylistBtn song={currentSong!} />
                                         </div>
 
                                         <Button
-                                            className="bg-gradient-to-tr from-bg-accent-300 via-primary-300 to-primary-200 text-background-950 border rounded-full"
+                                            className="bg-gradient-to-tr from-bg-accent-300 via-primary-300 to-primary-200 text-background-950 border rounded-full mt-2 max-w-max md:mt-0"
                                             variant="shadow"
                                         >
                                             <p className="mt-0.4">save</p>

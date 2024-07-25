@@ -19,12 +19,12 @@ const RemoveSongFromPlaylistBtn = (props: { song: Song }) => {
     };
 
     return (
-        <div className="transition-all min-w-[40px] min-h-[40px] group">
+        <div className="transition-all max-w-[35px] max-h-[35px] group">
             <Button
                 onPress={() => handleRemoveSongClick()}
                 isIconOnly
-                variant="light"
-                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 bg-opacity-0 hover:bg-accent-700 hover:bg-opacity-80 transition-opacity duration-300 max-w-[30px]"
             >
                 <FontAwesomeIcon icon={faXmark} />
             </Button>

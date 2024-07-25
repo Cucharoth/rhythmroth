@@ -13,7 +13,7 @@ const TabsSidebar = () => {
 
     return (
         <div
-            className={`flex flex-col basis-[12%] w-full transition-all sticky left-0 p-3 border-r border-gray-300
+            className={`flex-col hidden xl:flex xl:visible basis-[12%] w-full transition-all sticky left-0 p-3 border-r border-gray-300
             }`}
         >
             <div className="flex flex-col">

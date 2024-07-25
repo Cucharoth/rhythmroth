@@ -31,12 +31,14 @@ export const sessionSlice = createSlice({
                 const existingSongIndex = state.recentlyPlayed.findIndex(
                     (stateSong) => stateSong.id == action.payload.id
                 );
+
                 // caps recentlyPlayed at 10
                 if (state.recentlyPlayed.length == 10) {
                     state.recentlyPlayed.pop();
-                    
-                    // if the song already exists, reorders the array
-                } else if (existingSongIndex != -1) {
+                }
+
+                // if the song already exists, reorders the array
+                if (existingSongIndex != -1) {
                     state.recentlyPlayed.splice(existingSongIndex, 1);
                 }
                 state.recentlyPlayed.unshift(action.payload);

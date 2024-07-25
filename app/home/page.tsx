@@ -8,6 +8,7 @@ import {
     CardHeader,
     Divider,
     Image,
+    Tooltip,
 } from "@nextui-org/react";
 import { Song } from "../types";
 import { useAppDispatch, useAppSelector } from "../stores/store";
@@ -17,7 +18,6 @@ import randomGen from "@/utils/RandomGen";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 import Loading from "@/components/Loading";
-import NextImage from "next/image";
 import { setFetchedSongs } from "../stores/sessionSlice";
 import RecentlyPlayedTable from "@/components/RecentlyPlayedTable";
 
@@ -60,9 +60,9 @@ const home = () => {
     const handleCardPress = (song: Song) => {
         router.push(`/home/song/${song.id}`);
     };
-    
+
     return (
-        <div className="container mx-auto h-full transition-full">
+        <div className="container mx-auto h-full transition-full overflow-auto 2xl:overflow-hidden">
             {isLoading ? (
                 <Loading />
             ) : (
@@ -71,7 +71,7 @@ const home = () => {
                         {selectedSongs.length > 0 &&
                             selectedSongs.map((song: Song) => (
                                 <Card
-                                    className="col-span-10 sm:col-span-2 max-w-full min-w-full max-h-full min-h-full"
+                                    className="col-span-10 xl:col-span-2 md:col-span-5 max-w-full min-w-full max-h-full min-h-full"
                                     key={song.id}
                                     isFooterBlurred
                                     isPressable
@@ -88,9 +88,14 @@ const home = () => {
                                     ></Image>
                                     <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100 overflow-hidden">
                                         <div className="text-start overflow-hidden">
-                                            <p className="text-xs md:text-base whitespace-nowrap overflow-hidden text-ellipsis">
-                                                {song.name}
-                                            </p>
+                                            <Tooltip
+                                                content={song.name}
+                                                className="text-white"
+                                            >
+                                                <p className="text-xs md:text-base whitespace-nowrap overflow-hidden text-ellipsis">
+                                                    {song.name}
+                                                </p>
+                                            </Tooltip>
                                             <p className="text-xs text-foreground/80">
                                                 {song.artist}
                                             </p>
@@ -102,15 +107,23 @@ const home = () => {
                     <div className="flex justify-center">
                         <Divider className="my-4 max-w-[50%] bg-primary-foreground" />
                     </div>
-                    <div className="flex grow min-h-[30%] basis-2/5 px-10">
-                        <div className="flex basis-2/5">
+                    <div className="grid grid-cols-10 max-h-[33%] basis-2/5 px-10">
+                        <div className="flex col-span-10 xl:col-span-3 basis-2/5">
                             <h2>PLAYLIST</h2>
                         </div>
-                        <div className="flex flex-col grow basis-3/5 px-5 border-l">
+                        <div className="flex justify-center">
+                            <Divider className="xl:hidden my-4 max-w-[50%] bg-primary-foreground" />
+                        </div>
+                        <div className="flex col-span-10 xl:col-span-6 px-0 max-h-[45%] flex-col basis-3/5 xl:px-5 xl:border-l ">
                             <h2>RECIENTES</h2>
-                            <div className="flex grow justify-center w-full h-full">
+                            <div
+                                id="grid"
+                                className="flex grow justify-center w-full h-full overflow-auto"
+                            >
                                 {recentlyPlayed[0] ? (
-                                    <RecentlyPlayedTable />
+                                    <RecentlyPlayedTable
+                                        recentlyPlayed={recentlyPlayed}
+                                    />
                                 ) : (
                                     <div className="flex justify-center items-center h-full w-full">
                                         <p className="text-center">
