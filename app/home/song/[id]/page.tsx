@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { Song } from "@/app/types";
 import { useAppSelector } from "@/app/stores/store";
 import Loading from "@/components/Loading";
+import GoogleLogin from "@/components/GoogleLogin";
 
 const songPage = ({ params } : {params: { id: number}}) => {
     const router = useRouter();

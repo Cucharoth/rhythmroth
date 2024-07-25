@@ -49,10 +49,15 @@ export const sessionSlice = createSlice({
         setFetchedSongs(state, action: PayloadAction<Song[]>) {
             state.fetchedSongs = action.payload;
         },
+        resetSession(state) {
+            state.fetchedSongs = [];
+            state.recentlyPlayed = [];
+            state.user = initialUser;
+        },
     },
 });
 
-export const { setUser, updateRecentlyPlayed, setFetchedSongs } =
+export const { setUser, updateRecentlyPlayed, setFetchedSongs, resetSession } =
     sessionSlice.actions;
 
 export default sessionSlice.reducer;

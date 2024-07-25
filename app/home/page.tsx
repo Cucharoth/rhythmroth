@@ -107,14 +107,14 @@ const home = () => {
                     <div className="flex justify-center">
                         <Divider className="my-4 max-w-[50%] bg-primary-foreground" />
                     </div>
-                    <div className="grid grid-cols-10 max-h-[33%] basis-2/5 px-10">
+                    <div className="grid grid-cols-10 max-h-[100%] basis-2/5 px-10">
                         <div className="flex col-span-10 xl:col-span-3 basis-2/5">
                             <h2>PLAYLIST</h2>
                         </div>
                         <div className="flex justify-center">
                             <Divider className="xl:hidden my-4 max-w-[50%] bg-primary-foreground" />
                         </div>
-                        <div className="flex col-span-10 xl:col-span-6 px-0 max-h-[45%] flex-col basis-3/5 xl:px-5 xl:border-l ">
+                        <div className="flex col-span-10 xl:col-span-6 px-0 max-h-[100%] flex-col basis-3/5 xl:px-5 xl:border-l ">
                             <h2>RECIENTES</h2>
                             <div
                                 id="grid"

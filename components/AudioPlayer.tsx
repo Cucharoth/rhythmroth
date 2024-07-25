@@ -9,7 +9,10 @@ import AudioPlayerInfo from "./AudioPlayerInfo";
 import { useAppDispatch, useAppSelector } from "@/app/stores/store";
 import { PlaylistSong, Song } from "@/app/types";
 import { useEffect, useState } from "react";
-import { setCurrentSongPlaylistId } from "@/app/stores/playlistSlice";
+import {
+    resetPlaylist,
+    setCurrentSongPlaylistId,
+} from "@/app/stores/playlistSlice";
 
 const defaultSong = {
     name: "",
@@ -119,6 +122,9 @@ const Player = () => {
     } else if (
         songs!.find((song) => song.playlistId == selectedSongPlaylistId) == null
     ) {
+        currentPlaylist = [];
+        currentPlaylist.push(defaultSong);
+        dispatch(resetPlaylist());
         selectedSongPlaylistId = 1;
     }
     const [playlist, setPlaylist] = useState<PlayList>(currentPlaylist);
@@ -133,21 +139,25 @@ const Player = () => {
 
             // removes song from Player playlist
         } else if (songs && songs.length < playlist.length) {
-            console.log(lastRemovedPlaylistId);
             const deletedSongIndex = playlist.findIndex(
                 (song) => song.id == lastRemovedPlaylistId
             );
 
-            if (playlist.length == 1) {
+            if (playlist.length <= 1) {
                 playlist[0] = defaultSong;
                 setCurPlayId(1);
             } else {
                 playlist.splice(deletedSongIndex, 1);
             }
+        } else if (songs && songs.length == 0) {
+            console.log("song lenght == 0");
+            playlist[0] = defaultSong;
+            setCurPlayId(1);
         }
 
         // handles first song added
         if (songs!.length > 0 && playlist[0].name == "") {
+            console.log("new song");
             const newPlaylistSong = getLastSongAdded();
             playlist.pop();
             playlist.push(newPlaylistSong);

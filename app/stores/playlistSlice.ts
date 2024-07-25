@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Playlist, Song } from "@/app/types";
 
+
+
 const playlist: Playlist = {
     id: "",
     name: "",
@@ -43,6 +45,14 @@ export const playlistSlice = createSlice({
         setIsPaused(state, action: PayloadAction<boolean>) {
             state.isPaused = action.payload;
         },
+        resetPlaylist(state) {
+            console.log("reset playlist")
+            state.playlist = playlist;
+            state.currentSongPlaylistId = 1;
+            state.selectedSongPlaylistId = 1;
+            state.isOpen = false;
+            state.isPaused = false;
+        },
     },
 });
 
@@ -53,6 +63,7 @@ export const {
     setIsOpen,
     removeSong,
     setIsPaused,
+    resetPlaylist
 } = playlistSlice.actions;
 
 export default playlistSlice.reducer;
