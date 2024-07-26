@@ -12,7 +12,6 @@ export const POST = async (request: NextRequest) => {
     });
 
     //guard
-    console.log(existingUser)
     if (existingUser) {
         const responseUser: User = {
             id: existingUser.id,

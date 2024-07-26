@@ -24,6 +24,7 @@ export const sessionSlice = createSlice({
     reducers: {
         setUser(state, action: PayloadAction<User>) {
             state.user = action.payload;
+            console.log("user saved");
         },
         updateRecentlyPlayed(state, action: PayloadAction<Song>) {
             if (state.recentlyPlayed[0]) {

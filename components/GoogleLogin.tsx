@@ -25,7 +25,6 @@ const googleLogin = () => {
         signInWithPopup(auth, googleProvider)
             .then(async (result: UserCredential) => {
                 setIsLoading(true);
-                console.log(result);
                 handleLogin(result);
             })
             .catch((why) => {

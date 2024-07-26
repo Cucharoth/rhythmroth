@@ -133,7 +133,7 @@ db.getCollection("songs").insertMany(
             _id: 1015,
             name: "VORTEX",
             artist: "Jaws",
-            src: "https://dl.dropbox.com/scl/fi/xplsw014iq5t283ebxewe/FAKE-TYPE.-feat.-MV.mp3?rlkey=ojuggkqxbb9sspeph6cfnr8t1&st=jo600ouk",
+            src: "https://dl.dropbox.com/scl/fi/w1cddohligqgrggruxbbv/VORTEX-jaws.mp3?rlkey=exgpjgq6mjbxqm7yowi4twj3i&st=1hxl7o48",
             duration: "4:09",
             coverSrc:
                 "https://dl.dropbox.com/scl/fi/wyqs0xog6evtcdj9amre0/VORTEX.png?rlkey=x5llsxgncyx8sn80k5op2ohwu&st=ojwgd95i",
