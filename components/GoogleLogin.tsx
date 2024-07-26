@@ -50,9 +50,10 @@ const googleLogin = () => {
             });
 
             if (response.status == 201 || response.status == 200) {
-                const user: User = await response.json();
+                console.log(response.status)
+                const newUser: User = await response.json();
                 setIsLoading(false);
-                dispatch(setUser(user));
+                dispatch(setUser(newUser));
                 router.push("/home");
             } else {
                 console.error("error: ", response.statusText);
