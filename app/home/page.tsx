@@ -24,8 +24,8 @@ import RecentlyPlayedTable from "@/components/RecentlyPlayedTable";
 const home = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const [recentlyPlayed, _setRecentlyPlayed] = useState<Song[]>(
-        useAppSelector((state) => state.session.recentlyPlayed)
+    const recentlyPlayed= 
+        useAppSelector((state) => state.session.recentlyPlayed
     );
     const [songs, setSongs] = useState<Song[]>([]);
     const [selectedSongs, setSelectedSongs] = useState<Song[]>([]);

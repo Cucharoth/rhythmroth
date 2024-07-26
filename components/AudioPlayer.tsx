@@ -143,21 +143,19 @@ const Player = () => {
                 (song) => song.id == lastRemovedPlaylistId
             );
 
-            if (playlist.length <= 1) {
+            if (songs.length <= 1) {
                 playlist[0] = defaultSong;
                 setCurPlayId(1);
             } else {
                 playlist.splice(deletedSongIndex, 1);
             }
         } else if (songs && songs.length == 0) {
-            console.log("song lenght == 0");
             playlist[0] = defaultSong;
             setCurPlayId(1);
         }
 
         // handles first song added
         if (songs!.length > 0 && playlist[0].name == "") {
-            console.log("new song");
             const newPlaylistSong = getLastSongAdded();
             playlist.pop();
             playlist.push(newPlaylistSong);

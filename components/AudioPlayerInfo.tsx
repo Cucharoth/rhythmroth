@@ -23,6 +23,7 @@ const AudioPlayerInfo = ({
         (song) => song.id == currentSongPlaylistId
     );
     const isPaused = audioPlayerState?.elementRefs?.audioEl?.paused;
+
     // updates the current song playlist ID and the recently played
     useEffect(() => {
         if (currentSongPlaylistId != undefined) {
@@ -41,8 +42,6 @@ const AudioPlayerInfo = ({
     useEffect(() => {
         dispatch(setIsPaused(!isPaused));
     }, [isPaused]);
-
-    //console.log(audioPlayerState?.playList);
 
     return (
         <div className="flex justify-start mt-[2px] md:mt-0 md:min-w-[315px] max-w-[315px]">

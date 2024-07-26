@@ -1,3 +1,5 @@
+"use client";
+
 import { Song } from "@/app/types";
 import {
     getKeyValue,
@@ -9,9 +11,16 @@ import {
     TableRow,
     Image,
 } from "@nextui-org/react";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const RecentlyPlayedTable = (props: { recentlyPlayed: Song[] }) => {
+    const router = useRouter();
+
+    const handleRowCLick = (song: Song) => {
+        router.push(`/home/song/${song.id}`)
+    };
+
     const renderCell = React.useCallback(
         (song: Song, columnKey: string | number) => {
             const cellValue = song[columnKey];
@@ -52,7 +61,11 @@ const RecentlyPlayedTable = (props: { recentlyPlayed: Song[] }) => {
                     items={props.recentlyPlayed}
                 >
                     {(song) => (
-                        <TableRow key={song.id}>
+                        <TableRow
+                            key={song.id}
+                            className="cursor-pointer"
+                            onClick={() => handleRowCLick(song)}
+                        >
                             {(columnKey) => (
                                 <TableCell>
                                     {renderCell(song, columnKey)}

@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/app/stores/store";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -14,15 +14,23 @@ import {
 } from "@nextui-org/navbar";
 import {
     Avatar,
+    Button,
     Dropdown,
     DropdownItem,
     DropdownMenu,
     DropdownTrigger,
+    Input,
+    Spacer,
+    Image,
 } from "@nextui-org/react";
 import GoogleLogin from "./GoogleLogin";
 import { useRouter } from "next/navigation";
 import { resetSession } from "@/app/stores/sessionSlice";
 import { resetPlaylist } from "@/app/stores/playlistSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import SearchBar from "./SearchBar";
+import logoImage from "@/app/assets/images/logo.png";
 
 const NavbarComponent = () => {
     const router = useRouter();
@@ -37,20 +45,26 @@ const NavbarComponent = () => {
 
     return (
         <Navbar className="flex flex-row bg-primary-200 px-7" maxWidth="full">
-            <NavbarBrand>
-                <Link href="/home">LOGO</Link>
+            <NavbarBrand className="max-w-15">
+                <Link href="/home">
+                    <Image
+                        src={logoImage.src}
+                        width={50}
+                        height={45}
+                    >
+
+                    </Image>
+                </Link>
             </NavbarBrand>
+
             <NavbarContent
                 className="hidden sm:flex flex-1 gap-4"
                 justify="center"
             >
                 <NavbarItem>
-                    <Link color="foreground" href="/home">
-                        Home
-                    </Link>
+                    <SearchBar />
                 </NavbarItem>
             </NavbarContent>
-
             <NavbarContent as="div" justify="end">
                 {user?.id == "" ? (
                     <GoogleLogin />

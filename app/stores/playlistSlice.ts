@@ -46,7 +46,6 @@ export const playlistSlice = createSlice({
             state.isPaused = action.payload;
         },
         resetPlaylist(state) {
-            console.log("reset playlist")
             state.playlist = playlist;
             state.currentSongPlaylistId = 1;
             state.selectedSongPlaylistId = 1;
