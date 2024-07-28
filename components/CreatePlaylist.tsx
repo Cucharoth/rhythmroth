@@ -1,7 +1,11 @@
 "use client";
 
-import { useAppSelector } from "@/app/stores/store";
-import { faFloppyDisk, faMarker } from "@fortawesome/free-solid-svg-icons";
+import { useAppDispatch, useAppSelector } from "@/app/stores/store";
+import {
+    faCheck,
+    faFloppyDisk,
+    faMarker,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Button,
@@ -16,17 +20,22 @@ import {
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import { Playlist } from "@/app/types";
+import { updateUserPlaylist } from "@/app/stores/sessionSlice";
+import playlist from "./Playlist";
 
 const CreatePlaylist = () => {
+    const dispatch = useAppDispatch();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isInvalid, setIsInvalid] = useState<boolean>(true);
     const [inputValue, setInputValue] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const userPlaylists = useAppSelector(
-        (state) => state.session.userPlaylists
+        (state) => state.session.user?.playlists!
     );
     const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
     const temporalPlaylist = useAppSelector((state) => state.playlist.playlist);
+    const currentUser = useAppSelector((state) => state.session.user);
+    const [isSaved, setIsSaved] = useState<boolean>(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value;
@@ -44,8 +53,9 @@ const CreatePlaylist = () => {
             return true;
         }
         const alreadyExists =
-            userPlaylists.find((playlist) => playlist.name == input) !=
-            undefined;
+            userPlaylists.find(
+                (playlist) => playlist.name.toLowerCase() == input.toLowerCase()
+            ) != undefined;
         if (alreadyExists) {
             setErrorMessage("¡You have a Playlist with that name!");
             return true;
@@ -54,26 +64,45 @@ const CreatePlaylist = () => {
         return false;
     };
 
-    const handleSubmit = () => {
-        const newPlaylist: Playlist = {
-            id: "",
-            name: inputValue,
-            songs: temporalPlaylist.songs
-        }
+    const handleSubmit = async () => {
+        try {
+            setIsBtnLoading(true);
+            const playlistRequest: Playlist = {
+                id: "",
+                name: inputValue,
+                songs: temporalPlaylist.songs,
+            };
+            const request = {
+                userId: currentUser?.id,
+                playlistRequest,
+            };
+            const response = await fetch(`/api/playlist/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(request),
+            });
 
-        fetch(`/api/playlist/create`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newPlaylist),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
+            if (response.status == 201) {
+                const newPlaylist: Playlist = await response.json();
+                setInputValue("");
+                setTimeout(() => {
+                    onOpenChange();
+                    dispatch(updateUserPlaylist(newPlaylist));
+                }, 3000);
+            } else {
+                const errorMessage = await response.json();
+                throw new Error(errorMessage);
+            }
+        } catch (error: any) {
+            console.error(error.message);
+        } finally {
+            setTimeout(() => {
                 setIsBtnLoading(false);
-            })
-            .catch((error) => console.error(error));
+                setIsSaved(true);
+            }, 300);
+        }
     };
 
     return (
@@ -103,45 +132,89 @@ const CreatePlaylist = () => {
                         <>
                             <ModalHeader>Create Playlist</ModalHeader>
                             <ModalBody>
-                                <Input
-                                    autoFocus
-                                    isRequired
-                                    onChange={handleInputChange}
-                                    isInvalid={isInvalid}
-                                    errorMessage={errorMessage}
-                                    endContent={
-                                        <FontAwesomeIcon icon={faMarker} />
-                                    }
-                                    placeholder="Insert a Playlist Name"
-                                    variant="underlined"
-                                    color="primary"
-                                    classNames={{
-                                        label: "text-primary-200",
-                                        input: [
-                                            "bg-transparent",
-                                            "text-black",
-                                            "placeholder:text-black",
-                                        ],
-                                    }}
-                                ></Input>
+                                {!isSaved ? (
+                                    <Input
+                                        autoFocus
+                                        isRequired
+                                        onChange={handleInputChange}
+                                        isInvalid={isInvalid}
+                                        errorMessage={errorMessage}
+                                        endContent={
+                                            <FontAwesomeIcon icon={faMarker} />
+                                        }
+                                        onKeyUp={(e) => {
+                                            if (
+                                                e.key === "Enter" &&
+                                                !isInvalid
+                                            ) {
+                                                handleSubmit();
+                                            }
+                                        }}
+                                        placeholder="Insert a Playlist Name"
+                                        variant="underlined"
+                                        color="primary"
+                                        classNames={{
+                                            label: "text-primary-200",
+                                            input: [
+                                                "bg-transparent",
+                                                "text-black",
+                                                "placeholder:text-black",
+                                            ],
+                                        }}
+                                    />
+                                ) : (
+                                    <Input
+                                        readOnly
+                                        autoFocus
+                                        placeholder="¡Playlist successfully saved!"
+                                        value={inputValue}
+                                        className="text-success"
+                                        color="primary"
+                                        endContent={
+                                            <FontAwesomeIcon
+                                                icon={faCheck}
+                                                size="lg"
+                                            />
+                                        }
+                                        variant="underlined"
+                                        classNames={{
+                                            input: [
+                                                "bg-transparent",
+                                                "text-black",
+                                                "placeholder:text-black",
+                                            ],
+                                        }}
+                                    />
+                                )}
                             </ModalBody>
                             <ModalFooter className="">
-                                <div className="flex grow justify-between">
-                                    <Button
-                                        isDisabled={isInvalid}
-                                        onPress={handleSubmit}
-                                        isLoading={isBtnLoading}
-                                        className="bg-gradient-to-tr from-accent-300 via-primary-300 to-primary-200 text-background-950 border-primary-400 border rounded-full shadow-md"
-                                    >
-                                        Create
-                                    </Button>
-                                    <Button
-                                        onPress={onClose}
-                                        className="bg-gradient-to-tr from-accent-300 via-primary-300 to-primary-200 text-background-950 border-primary-400 border rounded-full shadow-md"
-                                    >
-                                        Cancel
-                                    </Button>
-                                </div>
+                                {!isSaved ? (
+                                    <div className="flex grow justify-between">
+                                        <Button
+                                            isDisabled={isInvalid}
+                                            onPress={handleSubmit}
+                                            isLoading={isBtnLoading}
+                                            className="bg-gradient-to-tr from-accent-300 via-primary-300 to-primary-200 text-background-950 border-primary-400 border rounded-full shadow-md"
+                                        >
+                                            Create
+                                        </Button>
+                                        <Button
+                                            onPress={onClose}
+                                            className="bg-gradient-to-tr from-accent-300 via-primary-300 to-primary-200 text-background-950 border-primary-400 border rounded-full shadow-md"
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <Button
+                                            className="bg-gradient-to-tr from-accent-300 via-primary-300 to-primary-200 text-background-950 border-primary-400 border rounded-full shadow-md"
+                                            onPress={onClose}
+                                        >
+                                            Volver
+                                        </Button>
+                                    </div>
+                                )}
                             </ModalFooter>
                         </>
                     )}

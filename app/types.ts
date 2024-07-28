@@ -3,13 +3,13 @@ export interface User {
     userName: string | null;
     email: string | null;
     profileImg: string | null;
+    playlists: Playlist[];
 } 
 
 export interface Session {
     user: User | null;
     recentlyPlayed: Song[];
     fetchedSongs: Song[];
-    userPlaylists: Playlist[];
 }
 
 export interface Song {

@@ -1,6 +1,15 @@
 import mongoose, { Schema } from "mongoose";
 
-const songSchema = new Schema(
+export interface SongDoc {
+    _id: number,
+    name: string,
+    artist: string,
+    src: string,
+    duration: string,
+    coverSrc: string,
+} 
+
+const songSchema = new Schema<SongDoc>(
     {
         _id: { type: Number, required: true },
         name: { type: String, required: true },

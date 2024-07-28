@@ -39,6 +39,7 @@ const googleLogin = () => {
                 userName: result.user.displayName,
                 email: result.user.email,
                 profileImg: result.user.photoURL,
+                playlists: [],
             };
             const response = await fetch("/api/auth/login", {
                 method: "POST",
@@ -49,7 +50,6 @@ const googleLogin = () => {
             });
 
             if (response.status == 201 || response.status == 200) {
-                console.log(response.status)
                 const newUser: User = await response.json();
                 setIsLoading(false);
                 dispatch(setUser(newUser));

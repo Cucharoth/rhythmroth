@@ -7,17 +7,16 @@ const initialUser: User = {
     userName: "",
     email: "",
     profileImg: "",
+    playlists: [],
 };
 
 const recentlyPlayed: Song[] = [];
 const fetchedSongs: Song[] = [];
-const userPlaylists: Playlist[] = []
 
 const initialState: Session = {
     user: initialUser,
     recentlyPlayed,
     fetchedSongs,
-    userPlaylists,
 };
 
 export const sessionSlice = createSlice({
@@ -26,7 +25,6 @@ export const sessionSlice = createSlice({
     reducers: {
         setUser(state, action: PayloadAction<User>) {
             state.user = action.payload;
-            console.log("user saved");
         },
         updateRecentlyPlayed(state, action: PayloadAction<Song>) {
             if (state.recentlyPlayed[0]) {
@@ -57,10 +55,22 @@ export const sessionSlice = createSlice({
             state.recentlyPlayed = [];
             state.user = initialUser;
         },
+        updateUserPlaylist(state, action: PayloadAction<Playlist>) {
+            state.user?.playlists.push(action.payload);
+        },
+        setUserPlaylist(state, action: PayloadAction<Playlist[]>) {
+            state.user!.playlists = action.payload;
+        },
     },
 });
 
-export const { setUser, updateRecentlyPlayed, setFetchedSongs, resetSession } =
-    sessionSlice.actions;
+export const {
+    setUser,
+    updateRecentlyPlayed,
+    setFetchedSongs,
+    resetSession,
+    updateUserPlaylist,
+    setUserPlaylist
+} = sessionSlice.actions;
 
 export default sessionSlice.reducer;

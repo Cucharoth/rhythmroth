@@ -1,15 +1,14 @@
 "use client";
 
+import { useAppSelector } from "@/app/stores/store";
 import { faHome, faList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    Button,
-    Divider,
-} from "@nextui-org/react";
+import { Button, Divider } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 const TabsSidebar = () => {
     const router = useRouter();
+    const currentUser = useAppSelector((state) => state.session.user);
 
     return (
         <div
@@ -29,20 +28,20 @@ const TabsSidebar = () => {
                         HOME
                     </h2>
                 </Button>
-                <Button
-                    onPress={() => router.push("/home/playlist")}
-                    className="my-1 justify-start bg-opacity-0 hover:bg-accent-200 hover:bg-opacity-50"
-                >
-                    <div className="max-w-4 min-w-4 mt-[2px] text-background-950">
-                        <FontAwesomeIcon icon={faList} />
-                    </div>
-                    <Divider orientation="vertical" className="bg-black" />
-                    <h2 className="basis-[5/6] mt-[1.5px] font-semibold text-background-950">
-                        PLAYLIST
-                    </h2>
-                </Button>
-                <Button variant="light" className="my-2"></Button>
-                <Button variant="light" className="my-2"></Button>
+                {currentUser?.id != "" && (
+                    <Button
+                        onPress={() => router.push("/home/playlist")}
+                        className="my-1 justify-start bg-opacity-0 hover:bg-accent-200 hover:bg-opacity-50"
+                    >
+                        <div className="max-w-4 min-w-4 mt-[2px] text-background-950">
+                            <FontAwesomeIcon icon={faList} />
+                        </div>
+                        <Divider orientation="vertical" className="bg-black" />
+                        <h2 className="basis-[5/6] mt-[1.5px] font-semibold text-background-950">
+                            PLAYLIST
+                        </h2>
+                    </Button>
+                )}
             </div>
         </div>
     );
