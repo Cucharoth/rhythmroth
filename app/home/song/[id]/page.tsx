@@ -19,6 +19,7 @@ import { Song } from "@/app/types";
 import { useAppSelector } from "@/app/stores/store";
 import Loading from "@/components/Loading";
 import GoogleLogin from "@/components/GoogleLogin";
+import CreatePlaylist from "@/components/CreatePlaylist";
 
 const songPage = ({ params } : {params: { id: number}}) => {
     const router = useRouter();
@@ -60,8 +61,8 @@ const songPage = ({ params } : {params: { id: number}}) => {
                 >
                     <CardHeader className="mx-10">
                         <Button
-                            variant="faded"
-                            className="rounded-full bg-primary-200 text-black"
+                        size="sm"
+                            className="bg-gradient-to-tr from-bg-accent-300 via-primary-300 to-primary-200 text-background-950 border rounded-full shadow-md"
                             onPress={() => router.back()}
                         >
                             <FontAwesomeIcon icon={faReply} size="xl" />

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Session, Song, User } from "@/app/types";
+import { Playlist, Session, Song, User } from "@/app/types";
 
 const initialUser: User = {
     id: "",
@@ -11,11 +11,13 @@ const initialUser: User = {
 
 const recentlyPlayed: Song[] = [];
 const fetchedSongs: Song[] = [];
+const userPlaylists: Playlist[] = []
 
 const initialState: Session = {
     user: initialUser,
     recentlyPlayed,
     fetchedSongs,
+    userPlaylists,
 };
 
 export const sessionSlice = createSlice({

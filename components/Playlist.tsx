@@ -17,6 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import RemoveSongFromPlaylistBtn from "./song/RemoveSongFromPlaylistBtn";
 import { Image } from "@nextui-org/image";
+import CreatePlaylist from "./CreatePlaylist";
 
 const playlist = () => {
     const dispatch = useAppDispatch();
@@ -30,9 +31,9 @@ const playlist = () => {
         (state) => state.playlist.currentSongPlaylistId
     );
     const songs = playlist.songs;
+    const currentUser = useAppSelector((state) => state.session.user!);
 
     const handleSongPlaylistClick = (song: Song) => {
-        console.log(song);
         dispatch(setSelectedSongPlaylistId(song.playlistId));
     };
 
@@ -50,15 +51,18 @@ const playlist = () => {
     const PlaylistOpen = () => {
         return (
             <div className="transition-all">
-                {playlist.name != "" ? (
-                    <h2 className="text-lg px-2 font-bold mb-4">
-                        {playlist.name}
-                    </h2>
-                ) : (
-                    <h2 className="text-lg px-2 text-primary-foreground font-bold transition-all">
-                        Playlist
-                    </h2>
-                )}
+                <div className="flex min-h-[37px] items-center justify-between">
+                    {playlist.name != "" ? (
+                        <h2 className="text-lg px-2 font-bold mb-4">
+                            {playlist.name}
+                        </h2>
+                    ) : (
+                        <h2 className="text-lg px-2 text-primary-foreground font-bold transition-all">
+                            Playlist
+                        </h2>
+                    )}
+                    {(currentUser.id != "" && songs!.length > 0) && <CreatePlaylist />}
+                </div>
                 <ul>
                     <Divider className="mt-2 mb-4" />
                     {songs?.length == 0 ? (
@@ -134,7 +138,7 @@ const playlist = () => {
                 size="sm"
                 isIconOnly
                 radius="full"
-                className=" mb-3 px-2 mx-2 bg-gradient-to-tr from-accent to-accent-300 text-white shadow-lg"
+                className=" mb-3 px-2 mx-2 bg-gradient-to-tr from-accent-300 via-primary-300 to-primary-200 text-background-950 border rounded-full shadow-md"
                 onPress={() => dispatch(setIsOpen(!isPlaylistOpen))}
             >
                 {isPlaylistOpen ? (

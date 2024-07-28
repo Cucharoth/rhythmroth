@@ -2,33 +2,24 @@
 
 import { useAppDispatch, useAppSelector } from "@/app/stores/store";
 import Link from "next/link";
-import React, { useState } from "react";
 import {
     Navbar,
     NavbarBrand,
     NavbarContent,
     NavbarItem,
-    NavbarMenuToggle,
-    NavbarMenu,
-    NavbarMenuItem,
 } from "@nextui-org/navbar";
 import {
     Avatar,
-    Button,
     Dropdown,
     DropdownItem,
     DropdownMenu,
     DropdownTrigger,
-    Input,
-    Spacer,
     Image,
 } from "@nextui-org/react";
 import GoogleLogin from "./GoogleLogin";
 import { useRouter } from "next/navigation";
 import { resetSession } from "@/app/stores/sessionSlice";
 import { resetPlaylist } from "@/app/stores/playlistSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./SearchBar";
 import logoImage from "@/app/assets/images/logo.png";
 
