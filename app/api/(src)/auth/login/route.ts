@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "../../../config/db";
 import UserModel from "../../../models/user";
-import { User } from "@/app/types";
+import { Playlist, Song, User } from "@/app/types";
 import { PlaylistDoc } from "@/app/api/models/playlist";
 import { SongDoc } from "@/app/api/models/song";
 
@@ -27,10 +27,10 @@ export const POST = async (request: NextRequest) => {
                 email: existingUser.email,
                 profileImg: existingUser.profileImg,
                 playlists: existingUser.playlists.map(
-                    (playlistDoc: PlaylistDoc) => ({
+                    (playlistDoc: PlaylistDoc): Playlist => ({
                         id: playlistDoc._id,
                         name: playlistDoc.name,
-                        song: playlistDoc.songs.map((songDoc: SongDoc) => ({
+                        songs: playlistDoc.songs.map((songDoc: SongDoc): Song => ({
                             id: songDoc._id,
                             playlistId: 0,
                             name: songDoc.name,

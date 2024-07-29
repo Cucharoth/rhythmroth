@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Playlist, Song } from "@/app/types";
 
-
-
 const playlist: Playlist = {
     id: "",
     name: "",
@@ -17,6 +15,7 @@ const initialState = {
     lastRemovedPlaylistId: 0,
     selectedSongPlaylistId: 0,
     isPaused: false,
+    newPlaylistState: false,
 };
 
 export const playlistSlice = createSlice({
@@ -46,11 +45,34 @@ export const playlistSlice = createSlice({
             state.isPaused = action.payload;
         },
         resetPlaylist(state) {
+            console.log("playlist reset");
             state.playlist = playlist;
             state.currentSongPlaylistId = 1;
             state.selectedSongPlaylistId = 1;
             state.isOpen = false;
             state.isPaused = false;
+        },
+        setPlaylist(state, action: PayloadAction<Playlist>) {
+            console.log("payload playlist");
+            console.log(action.payload);
+            state.playlist.id = action.payload.id;
+            state.playlist.name = action.payload.name;
+            state.playlist.songs = action.payload.songs!.map(
+                (song: Song, index) => ({
+                    ...song,
+                    playlistId: index + 2,
+                })
+            );
+            console.log("state playlist");
+            console.log(state.playlist);
+            state.newPlaylistState = true;
+        },
+        clearPlaylist(state) {
+            console.log("clear playlist")
+            state.playlist = playlist;
+        },
+        setNewPlaylistState(state, action: PayloadAction<boolean>) {
+            state.newPlaylistState = action.payload;
         },
     },
 });
@@ -62,7 +84,10 @@ export const {
     setIsOpen,
     removeSong,
     setIsPaused,
-    resetPlaylist
+    resetPlaylist,
+    setPlaylist,
+    clearPlaylist,
+    setNewPlaylistState
 } = playlistSlice.actions;
 
 export default playlistSlice.reducer;

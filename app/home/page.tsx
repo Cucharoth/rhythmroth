@@ -19,7 +19,7 @@ import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
 import Loading from "@/components/Loading";
 import { setFetchedSongs } from "../stores/sessionSlice";
-import RecentlyPlayedTable from "@/components/RecentlyPlayedTable";
+import RecentlyPlayedTable from "@/components/SongsTable";
 
 const home = () => {
     const router = useRouter();
@@ -122,7 +122,7 @@ const home = () => {
                             >
                                 {recentlyPlayed[0] ? (
                                     <RecentlyPlayedTable
-                                        recentlyPlayed={recentlyPlayed}
+                                        songs={recentlyPlayed}
                                     />
                                 ) : (
                                     <div className="flex justify-center items-center h-full w-full">

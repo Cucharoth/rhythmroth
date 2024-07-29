@@ -24,6 +24,8 @@ const AudioPlayerInfo = ({
     );
     const isPaused = audioPlayerState?.elementRefs?.audioEl?.paused;
 
+    console.log(audioPlayerState);
+
     // updates the current song playlist ID and the recently played
     useEffect(() => {
         if (currentSongPlaylistId != undefined) {

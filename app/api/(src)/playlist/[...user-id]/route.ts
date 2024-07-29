@@ -1,6 +1,6 @@
 import connectDB from "@/app/api/config/db";
 import { PlaylistDoc } from "@/app/api/models/playlist";
-import { Playlist } from "@/app/types";
+import { Playlist, Song } from "@/app/types";
 import { NextRequest, NextResponse } from "next/server";
 import React from "react";
 import { SongDoc } from "@/app/api/models/song";
@@ -25,10 +25,10 @@ export const GET = async (request: NextRequest) => {
 
         // maps the response 
         const response: Playlist[] = user.playlists.map(
-            (playlistDoc: PlaylistDoc) => ({
+            (playlistDoc: PlaylistDoc): Playlist => ({
                 id: playlistDoc._id,
                 name: playlistDoc.name,
-                songs: playlistDoc.songs.map((songDoc: SongDoc) => ({
+                songs: playlistDoc.songs.map((songDoc: SongDoc): Song => ({
                     id: songDoc._id,
                     playlistId: 0,
                     name: songDoc.name,

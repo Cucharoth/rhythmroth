@@ -14,7 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const RecentlyPlayedTable = (props: { recentlyPlayed: Song[] }) => {
+const RecentlyPlayedTable = (props: { songs: Song[] }) => {
     const router = useRouter();
 
     const handleRowCLick = (song: Song) => {
@@ -46,7 +46,12 @@ const RecentlyPlayedTable = (props: { recentlyPlayed: Song[] }) => {
         <div className="container">
             <Table
                 removeWrapper
-                hideHeader
+                classNames={
+                    {
+                        th: "bg-transparent border-b h-6 text-primary-foreground",
+                        emptyWrapper: "text-black"
+                    }
+                }
                 selectionMode="single"
                 aria-label="recently played table"
             >
@@ -57,8 +62,8 @@ const RecentlyPlayedTable = (props: { recentlyPlayed: Song[] }) => {
                     <TableColumn key={"artist"}>ARTIST</TableColumn>
                 </TableHeader>
                 <TableBody
-                    emptyContent={"No rows to display."}
-                    items={props.recentlyPlayed}
+                    emptyContent={"Select a Playlist."}
+                    items={props.songs}
                 >
                     {(song) => (
                         <TableRow

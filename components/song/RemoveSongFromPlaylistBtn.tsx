@@ -14,7 +14,6 @@ const RemoveSongFromPlaylistBtn = (props: { song: Song }) => {
     const dispatch = useAppDispatch();
 
     const handleRemoveSongClick = () => {
-        console.log(props.song);
         dispatch(removeSong(props.song));
     };
 

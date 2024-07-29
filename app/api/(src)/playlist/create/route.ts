@@ -38,12 +38,12 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json("The playlist is empty", { status: 400 });
         }
 
-        // creates an array of Songs IDs to relation playlist with
+        // creates an array of Songs IDs to associate playlist with
         const songIds: number[] = playlistRequest.songs?.map(
             (song: Song) => song.id
         );
 
-        // creates a new playlist and saves it in DB
+        // creates a new playlist and saves it
         const newPlaylist = await PlaylistModel.create({
             name: playlistRequest.name,
             songs: songIds,

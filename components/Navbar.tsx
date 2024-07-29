@@ -38,13 +38,7 @@ const NavbarComponent = () => {
         <Navbar className="flex flex-row bg-primary-200 px-7" maxWidth="full">
             <NavbarBrand className="max-w-15">
                 <Link href="/home">
-                    <Image
-                        src={logoImage.src}
-                        width={50}
-                        height={45}
-                    >
-
-                    </Image>
+                    <Image src={logoImage.src} width={50} height={45}></Image>
                 </Link>
             </NavbarBrand>
 
@@ -52,7 +46,7 @@ const NavbarComponent = () => {
                 className="hidden sm:flex flex-1 gap-4"
                 justify="center"
             >
-                <NavbarItem>
+                <NavbarItem aria-label="Search Bar">
                     <SearchBar />
                 </NavbarItem>
             </NavbarContent>
@@ -84,6 +78,7 @@ const NavbarComponent = () => {
                                 <DropdownItem
                                     key="profile"
                                     className="h-14 gap-2"
+                                    textValue="Signed in as"
                                 >
                                     <p className="font-semibold">
                                         Signed in as
@@ -96,8 +91,9 @@ const NavbarComponent = () => {
                                     onPress={() => handleLogout()}
                                     key="logout"
                                     color="danger"
+                                    textValue="Log Out"
                                 >
-                                    Log Out
+                                    LogOut
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>

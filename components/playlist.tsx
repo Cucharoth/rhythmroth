@@ -18,6 +18,7 @@ import {
 import RemoveSongFromPlaylistBtn from "./song/RemoveSongFromPlaylistBtn";
 import { Image } from "@nextui-org/image";
 import CreatePlaylist from "./CreatePlaylist";
+import ClearPlaylist from "./ClearPlaylist";
 
 const playlist = () => {
     const dispatch = useAppDispatch();
@@ -36,6 +37,7 @@ const playlist = () => {
     const handleSongPlaylistClick = (song: Song) => {
         dispatch(setSelectedSongPlaylistId(song.playlistId));
     };
+    const [isPlaylistRdy, setIsPlaylistRdy] = useState<boolean>(false);
 
     // controls the playlist delay
     useEffect(() => {
@@ -48,12 +50,18 @@ const playlist = () => {
         return () => clearTimeout(timer);
     }, [isPlaylistOpen]);
 
+    // controls the playlist transition
+    // useEffect(() => {
+    //     setIsPlaylistRdy(false)
+    //     setTimeout(() => setIsPlaylistRdy(true), 10000)
+    // }, [playlist]);
+
     const PlaylistOpen = () => {
         return (
             <div className="transition-all">
                 <div className="flex min-h-[37px] items-center justify-between">
                     {playlist.name != "" ? (
-                        <h2 className="text-lg px-2 font-bold mb-4">
+                        <h2 className="text-lg px-2 text-primary-foreground font-bold transition-all">
                             {playlist.name}
                         </h2>
                     ) : (
@@ -61,7 +69,13 @@ const playlist = () => {
                             Playlist
                         </h2>
                     )}
-                    {(currentUser.id != "" && songs!.length > 0) && <CreatePlaylist />}
+                    {currentUser.id != "" &&
+                        playlist.name == "" &&
+                        songs!.length > 0 && (
+                            <div className="flex">
+                                <CreatePlaylist />
+                            </div>
+                        )}
                 </div>
                 <ul>
                     <Divider className="mt-2 mb-4" />
@@ -71,8 +85,8 @@ const playlist = () => {
                         </p>
                     ) : (
                         <>
-                            {songs?.map((song: Song) => (
-                                <li className="transition-all" key={song.id}>
+                            {songs?.map((song: Song, index) => (
+                                <li key={song.id}>
                                     <div
                                         className={`flex justify-between items-center group px-2 hover:bg-accent-200 hover:bg-opacity-20 rounded-md transition-colors
                                     ${
@@ -130,7 +144,7 @@ const playlist = () => {
 
     return (
         <div
-            className={`hidden md:flex md:visible flex-col w-full transition-all sticky right-0 p-3 border-l border-gray-300 ${
+            className={`hidden grow md:flex md:visible flex-col w-full transition-all sticky right-0 p-3 border-l border-gray-300 ${
                 isPlaylistOpen ? "w-[30%] max-w-[370px]" : "w-[5%] max-w-[82px]"
             }`}
         >
@@ -138,7 +152,7 @@ const playlist = () => {
                 size="sm"
                 isIconOnly
                 radius="full"
-                className=" mb-3 px-2 mx-2 bg-gradient-to-tr from-accent-300 via-primary-300 to-primary-200 text-background-950 border rounded-full shadow-md"
+                className="min-h-[36px] mb-3 px-2 mx-2 bg-gradient-to-tr from-accent-300 via-primary-300 to-primary-200 text-background-950 border rounded-full shadow-md"
                 onPress={() => dispatch(setIsOpen(!isPlaylistOpen))}
             >
                 {isPlaylistOpen ? (
@@ -158,6 +172,11 @@ const playlist = () => {
                     )}
                 </>
             )}
+
+            <div className="flex flex-col w-full bottom-0 mt-auto justify-center items-center">
+                <Divider className="my-2" />
+                <ClearPlaylist />
+            </div>
         </div>
     );
 };
