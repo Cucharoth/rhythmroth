@@ -24,6 +24,7 @@ const songPage = ({ params } : {params: { id: number}}) => {
     const [currentSong, setCurrentSong] = useState<Song>();
     const [isLoading, setIsLoading] = useState(true);
     const song = fetchedSongs.find((song) => song.id == params.id)
+    const isPlaylistOpen = useAppSelector((state) => state.playlist.isOpen);
 
     // fetches song if the store happens to be empty or is not found in the store.
     useEffect(() => {
@@ -47,7 +48,11 @@ const songPage = ({ params } : {params: { id: number}}) => {
     }, []);
 
     return (
-        <div className="flex grow w-full justify-center items-center min-h-[590px]">
+        <div
+            className={`flex grow w-full justify-center items-start md:items-center min-h-[590px] ${
+                isPlaylistOpen && "blur-sm md:blur-none"
+            }`}
+        >
             {isLoading ? (
                 <Loading />
             ) : (
@@ -56,9 +61,9 @@ const songPage = ({ params } : {params: { id: number}}) => {
                     shadow="none"
                     fullWidth
                 >
-                    <CardHeader className="mx-10">
+                    <CardHeader className="md:mx-10 py-0 md:py-3">
                         <Button
-                        size="sm"
+                            size="sm"
                             className="bg-gradient-to-tr from-bg-accent-300 via-primary-300 to-primary-200 text-background-950 border rounded-full shadow-md"
                             onPress={() => router.back()}
                         >
@@ -66,7 +71,7 @@ const songPage = ({ params } : {params: { id: number}}) => {
                         </Button>
                     </CardHeader>
                     <CardBody>
-                        <div className="grid grid-cols-4 md:grid-cols-12 p-10 items-center justify-center">
+                        <div className="grid grid-cols-4 md:grid-cols-12  md:p-10 items-center justify-center">
                             <div className=" flex justify-center items-center col-span-6 md:col-span-5">
                                 <Image
                                     isBlurred
@@ -96,7 +101,9 @@ const songPage = ({ params } : {params: { id: number}}) => {
                                 <div className="flex mt-3 gap-1">
                                     <div className="flex flex-col md:flex-row">
                                         <div className="mr-2">
-                                            <AddSongToPlaylistBtn song={currentSong!} />
+                                            <AddSongToPlaylistBtn
+                                                song={currentSong!}
+                                            />
                                         </div>
 
                                         <Button

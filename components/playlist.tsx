@@ -43,7 +43,7 @@ const playlist = () => {
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (isPlaylistOpen) {
-            timer = setTimeout(() => setShowPlaylistOpen(true), 700);
+            timer = setTimeout(() => setShowPlaylistOpen(true), 500);
         } else {
             setShowPlaylistOpen(false);
         }
@@ -144,8 +144,10 @@ const playlist = () => {
 
     return (
         <div
-            className={`hidden grow md:flex md:visible flex-col w-full transition-all sticky right-0 p-3 border-l border-gray-300 ${
-                isPlaylistOpen ? "w-[30%] max-w-[370px]" : "w-[5%] max-w-[82px]"
+            className={`grow md:flex md:visible md:bg-opacity-0 md:z-0 md:pt-3 flex-col w-full transition-all md:sticky right-0 p-3 rounded-l-lg md:rounded-none border-l-8 border-primary-200 md:border-l md:border-gray-300 ${
+                isPlaylistOpen
+                    ? "flex visible playlist absolute min-h-svh bg-black bg-opacity-80 z-50 pt-12 w-[30%] max-w-[370px]"
+                    : " hidden md:visible w-[5%] max-w-[82px]"
             }`}
         >
             <Button

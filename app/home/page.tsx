@@ -20,6 +20,7 @@ import PlaylistTable from "@/components/PlaylistTable";
 const home = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const isPlaylistOpen = useAppSelector((state) => state.playlist.isOpen);
     const recentlyPlayed = useAppSelector(
         (state) => state.session.recentlyPlayed
     );
@@ -61,16 +62,16 @@ const home = () => {
     };
 
     return (
-        <div className="container mx-auto h-full transition-full overflow-auto 2xl:overflow-hidden">
+        <div className={`container mx-auto h-full transition-full overflow-auto 2xl:overflow-hidden ${isPlaylistOpen && 'blur-sm md:blur-none'}`}>
             {isLoading ? (
                 <Loading />
             ) : (
                 <>
-                    <div className="grid gap-4 min-h-[496px] grid-cols-10 px-10">
+                    <div className="grid gap-4 min-h-[496px] grid-cols-10 p-3 md:px-10">
                         {selectedSongs.length > 0 &&
                             selectedSongs.map((song: Song) => (
                                 <Card
-                                    className="col-span-10 xl:col-span-2 md:col-span-5 max-w-full min-w-full max-h-full min-h-full"
+                                    className="col-span-10 max-h-32 xl:col-span-2 md:col-span-5 max-w-full min-w-full md:max-h-full min-h-full"
                                     key={song.id}
                                     isFooterBlurred
                                     isPressable
@@ -106,7 +107,7 @@ const home = () => {
                     <div className="flex justify-center">
                         <Divider className="my-4 max-w-[50%] bg-primary-foreground" />
                     </div>
-                    <div className="grid grid-cols-10 max-h-[30%] basis-2/5 px-10 overflow-auto">
+                    <div className="grid grid-cols-10 max-h-[30%] basis-2/5 px-3 md:px-10 overflow-auto">
                         <div className="flex col-span-10 xl:col-span-4 h-auto basis-2/5 flex-col px-0 xl:pr-5">
                             <h2>PLAYLISTS</h2>
                             <div className="flex justify-center w-full h-full overflow-auto">

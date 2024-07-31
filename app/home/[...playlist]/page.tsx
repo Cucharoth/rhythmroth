@@ -22,6 +22,7 @@ const PlaylistPage = ({ params }: { params: { playlist: string } }) => {
         (state) => state.session.user?.playlists
     );
     const [inputValue, setInputValue] = useState<string>("");
+    const isPlaylistOpen = useAppSelector((state) => state.playlist.isOpen);
 
     useEffect(() => {
         if (currentUser.id != "") {
@@ -86,7 +87,7 @@ const PlaylistPage = ({ params }: { params: { playlist: string } }) => {
     }, []);
 
     return (
-        <div>
+        <div className={`${isPlaylistOpen && 'blur-sm md:blur-none'}`}>
             <div className="flex justify-start mb-5">
                 <div>
                     <Autocomplete
@@ -174,11 +175,15 @@ const PlaylistPage = ({ params }: { params: { playlist: string } }) => {
                         )}
                     </Autocomplete>
                 </div>
-                <div className="flex grow justify-between items-center ml-10 transition-all">
+                <div className="flex grow justify-between items-center ml-1 md:ml-10 transition-all">
                     {selectedPlaylist?.songs &&
                         selectedPlaylist.songs.length > 0 && (
                             <>
-                                <ChangePlaylist playlist={selectedPlaylist} />
+                                <div className="mr-2">
+                                    <ChangePlaylist
+                                        playlist={selectedPlaylist}
+                                    />
+                                </div>
                                 <DeletePlaylist playlist={selectedPlaylist} />
                             </>
                         )}
