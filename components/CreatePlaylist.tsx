@@ -22,6 +22,7 @@ import React, { useState } from "react";
 import { Playlist } from "@/app/types";
 import { updateUserPlaylist } from "@/app/stores/sessionSlice";
 import playlist from "./Playlist";
+import { updatePlaylist } from "@/app/stores/playlistSlice";
 
 const CreatePlaylist = () => {
     const dispatch = useAppDispatch();
@@ -90,7 +91,8 @@ const CreatePlaylist = () => {
                 setTimeout(() => {
                     onOpenChange();
                     dispatch(updateUserPlaylist(newPlaylist));
-                }, 3000);
+                    dispatch(updatePlaylist(newPlaylist));
+                }, 1000);
             } else {
                 const errorMessage = await response.json();
                 throw new Error(errorMessage);

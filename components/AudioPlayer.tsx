@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/app/stores/store";
 import { PlaylistSong, Song } from "@/app/types";
 import { useEffect, useState } from "react";
 import {
+    clearPlaylist,
     resetPlaylist,
     setCurrentSongPlaylistId,
     setNewPlaylistState,
@@ -120,44 +121,39 @@ const Player = () => {
     }
 
     // sets the initials value that will be used for the Player on load.
-    useEffect(() => {
+
         if (currentPlaylist.length == 0) {
             currentPlaylist.push(defaultSong);
             dispatch(setCurrentSongPlaylistId(1));
             selectedSongPlaylistId = 1;
         } else if (
             songs!.find((song) => song.playlistId == selectedSongPlaylistId) ==
-            null
+                null &&
+            songs!.length != 0
         ) {
             console.error(
                 "Selected song '" +
                     selectedSongPlaylistId +
                     "' was not found in playlist Store, check song playlist ID"
             );
-            console.log(songs);
-            currentPlaylist = [];
-            currentPlaylist.push(defaultSong);
-            dispatch(resetPlaylist());
-            selectedSongPlaylistId = 1;
+            const validPlaylistId = currentPlaylist[0].id;
+            dispatch(setCurrentSongPlaylistId(validPlaylistId));
+            selectedSongPlaylistId = validPlaylistId;
         }
-    }, []);
     const [playlist, setPlaylist] = useState<PlayList>(currentPlaylist);
     const [curPlayId, setCurPlayId] = useState(selectedSongPlaylistId);
 
     //handles changes on store playlist
     useEffect(() => {
-        console.log("change on song");
-        console.log(songs);
         if (songs && songs.length == 0) {
-            console.log("on song == 0");
             playlist[0] = defaultSong;
             setCurPlayId(1);
             playlist.splice(1);
+            dispatch(clearPlaylist())
         }
 
         // adds song to Player playlist
         if (songs && songs.length > 0 && songs.length == playlist.length + 1) {
-            console.log("adding one");
             const newPlaylistSong: PlaylistSong = getLastSongAdded();
             setPlaylist([...playlist, newPlaylistSong]);
 
@@ -167,21 +163,18 @@ const Player = () => {
             songs.length != 0 &&
             songs.length == playlist.length - 1
         ) {
-            console.log("removes song");
             const deletedSongIndex = playlist.findIndex(
                 (song) => song.id == lastRemovedPlaylistId
             );
 
             if (songs.length <= 1) {
-                playlist[0] = defaultSong;
-                setCurPlayId(1);
+                dispatch(clearPlaylist());
             } else {
                 playlist.splice(deletedSongIndex, 1);
             }
         }
 
         if (songs && songs?.length > 0 && newPlaylistState) {
-            console.log("add new playlist");
             const newPlaylist = songs.map(
                 (song: Song): AudioData => ({
                     id: song.playlistId,
@@ -195,12 +188,10 @@ const Player = () => {
             dispatch(setCurrentSongPlaylistId(2));
             setCurPlayId(2);
             dispatch(setNewPlaylistState(false));
-            console.log(playlist);
         }
 
         // handles first song added
         if (!newPlaylistState && songs!.length > 0 && playlist[0].name == "") {
-            console.log("first song");
             const newPlaylistSong = getLastSongAdded();
             playlist.pop();
             playlist.push(newPlaylistSong);
@@ -214,10 +205,6 @@ const Player = () => {
             setCurPlayId(selectedSongPlaylistId);
         }
     }, [selectedSongPlaylistId]);
-
-    if (playlist == undefined || playlist == null) {
-        console.log("PLAYLIST UNDEFINED");
-    }
 
     const getLastSongAdded = (): PlaylistSong => {
         const lastSong = songs![songs!.length - 1];

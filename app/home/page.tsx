@@ -1,31 +1,30 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-    Button,
     Card,
     CardFooter,
-    CardHeader,
     Divider,
     Image,
     Tooltip,
 } from "@nextui-org/react";
 import { Song } from "../types";
 import { useAppDispatch, useAppSelector } from "../stores/store";
-import { addSong } from "../stores/playlistSlice";
 import { useRouter } from "next/navigation";
 import randomGen from "@/utils/RandomGen";
-import useSWR from "swr";
-import fetcher from "@/utils/fetcher";
 import Loading from "@/components/Loading";
 import { setFetchedSongs } from "../stores/sessionSlice";
 import RecentlyPlayedTable from "@/components/SongsTable";
+import PlaylistTable from "@/components/PlaylistTable";
 
 const home = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const recentlyPlayed= 
-        useAppSelector((state) => state.session.recentlyPlayed
+    const recentlyPlayed = useAppSelector(
+        (state) => state.session.recentlyPlayed
+    );
+    const userPlaylists = useAppSelector(
+        (state) => state.session.user?.playlists
     );
     const [songs, setSongs] = useState<Song[]>([]);
     const [selectedSongs, setSelectedSongs] = useState<Song[]>([]);
@@ -53,7 +52,7 @@ const home = () => {
             const randomIndexes = randomGen(10, 1, songs.length - 1);
             const randomSongs = randomIndexes.map((index) => songs[index]);
             setSelectedSongs(randomSongs);
-            setTimeout(() => setIsLoading(false), 500);
+            setTimeout(() => setIsLoading(false), 300);
         }
     }, [songs]);
 
@@ -107,14 +106,25 @@ const home = () => {
                     <div className="flex justify-center">
                         <Divider className="my-4 max-w-[50%] bg-primary-foreground" />
                     </div>
-                    <div className="grid grid-cols-10 max-h-[100%] basis-2/5 px-10">
-                        <div className="flex col-span-10 xl:col-span-3 basis-2/5">
-                            <h2>PLAYLIST</h2>
+                    <div className="grid grid-cols-10 max-h-[30%] basis-2/5 px-10 overflow-auto">
+                        <div className="flex col-span-10 xl:col-span-4 h-auto basis-2/5 flex-col px-0 xl:pr-5">
+                            <h2>PLAYLISTS</h2>
+                            <div className="flex justify-center w-full h-full overflow-auto">
+                                {userPlaylists?.length != 0 ? (
+                                    <PlaylistTable playlists={userPlaylists!} />
+                                ) : (
+                                    <div className="flex justify-center items-center h-full w-full">
+                                        <p className="text-center">
+                                            make some playlist~
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        <div className="flex justify-center">
-                            <Divider className="xl:hidden my-4 max-w-[50%] bg-primary-foreground" />
+                        <div className="md:hidden grow justify-center">
+                            <Divider className="md:hidden my-4 md:max-w-0 bg-primary-foreground" />
                         </div>
-                        <div className="flex col-span-10 xl:col-span-6 px-0 max-h-[100%] flex-col basis-3/5 xl:px-5 xl:border-l ">
+                        <div className="flex col-span-10 xl:col-span-6 px-0 max-h-[100%] flex-col basis-3/5 xl:pl-5 xl:border-l ">
                             <h2>RECIENTES</h2>
                             <div
                                 id="grid"

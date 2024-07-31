@@ -61,6 +61,10 @@ export const sessionSlice = createSlice({
         setUserPlaylist(state, action: PayloadAction<Playlist[]>) {
             state.user!.playlists = action.payload;
         },
+        deletePlaylist(state, action: PayloadAction<Playlist>) {
+            const playlistIndex = state.user?.playlists.findIndex((playlist) => playlist.id == action.payload.id)!;
+            state.user?.playlists.splice(playlistIndex, 1);
+        }
     },
 });
 
@@ -70,7 +74,8 @@ export const {
     setFetchedSongs,
     resetSession,
     updateUserPlaylist,
-    setUserPlaylist
+    setUserPlaylist,
+    deletePlaylist
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

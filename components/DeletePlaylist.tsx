@@ -1,21 +1,49 @@
-import { useAppDispatch } from '@/app/stores/store';
-import { faBan } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Tooltip } from '@nextui-org/react'
-import React from 'react'
+import { clearPlaylist } from "@/app/stores/playlistSlice";
+import { deletePlaylist } from "@/app/stores/sessionSlice";
+import { useAppDispatch, useAppSelector } from "@/app/stores/store";
+import { Playlist } from "@/app/types";
+import { faBan } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Tooltip } from "@nextui-org/react";
+import React from "react";
 
-const DeletePlaylist = () => {
+const DeletePlaylist = (props: { playlist: Playlist }) => {
     const dispatch = useAppDispatch();
+    let currentPlaylist = props.playlist;
+    const currentUser = useAppSelector((state) => state.session.user);
 
-    const handlePress = () => {
-        //console.log(props.playlist);
-        //dispatch();
-        //dispatch(setSelectedSongPlaylistId(2));
+    const handlePress = async () => {
+        try {
+            const request = {
+                userId: currentUser?.id,
+                playlistRequestId: currentPlaylist.id,
+            };
+            const response = await fetch("/api/playlist", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(request),
+            });
+            if (response.status == 200) {
+                currentPlaylist = await response.json();
+            } else {
+                const errorMessage = await response.json();
+                throw new Error(errorMessage);
+            }
+        } catch (error: any) {
+            console.error(error);
+        }
+        dispatch(deletePlaylist(currentPlaylist));
+        dispatch(clearPlaylist());
     };
 
-  return (
-    <div>
-            <Tooltip content={"Deletes the current playlist"}>
+    return (
+        <div>
+            <Tooltip
+                content={"Deletes the current playlist"}
+                className="text-white"
+            >
                 <Button
                     size="sm"
                     onPress={handlePress}
@@ -25,7 +53,7 @@ const DeletePlaylist = () => {
                 </Button>
             </Tooltip>
         </div>
-  )
-}
+    );
+};
 
-export default DeletePlaylist
+export default DeletePlaylist;

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import AddSongToPlaylistBtn from "@/components/song/AddSongToPlaylistBtn";
-import { commonColors, semanticColors } from "@nextui-org/theme";
 import {
     Button,
     Card,
@@ -18,8 +17,6 @@ import { useRouter } from "next/navigation";
 import { Song } from "@/app/types";
 import { useAppSelector } from "@/app/stores/store";
 import Loading from "@/components/Loading";
-import GoogleLogin from "@/components/GoogleLogin";
-import CreatePlaylist from "@/components/CreatePlaylist";
 
 const songPage = ({ params } : {params: { id: number}}) => {
     const router = useRouter();
@@ -45,7 +42,7 @@ const songPage = ({ params } : {params: { id: number}}) => {
                 .catch((error) => console.error(error));
         } else {
             setCurrentSong(song);
-            setTimeout(() => setIsLoading(false), 300);
+            setTimeout(() => setIsLoading(false), 200);
         }
     }, []);
 

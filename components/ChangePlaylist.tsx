@@ -1,6 +1,6 @@
 "use client";
 
-import { clearPlaylist, setPlaylist, setSelectedSongPlaylistId } from "@/app/stores/playlistSlice";
+import { clearPlaylist, setPlaylist } from "@/app/stores/playlistSlice";
 import { useAppDispatch } from "@/app/stores/store";
 import { Playlist } from "@/app/types";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +14,6 @@ const ChangePlaylist = (props: { playlist: Playlist }) => {
     const handlePress = () => {
         dispatch(clearPlaylist());
         setTimeout(() => dispatch(setPlaylist(props.playlist)), 200);
-        //dispatch(setSelectedSongPlaylistId(2));
     };
 
     return (

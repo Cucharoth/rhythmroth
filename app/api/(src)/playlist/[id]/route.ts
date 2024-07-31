@@ -18,7 +18,6 @@ export const GET = async (request: NextRequest) => {
         
         //TODO: do response.
         const songDoc = await PlaylistModel.findById(playlistId).populate("songs").exec();
-        console.log(songDoc)
         return NextResponse.json("soon*", { status: 500 });
     } catch (error: any) {
         console.error(error);

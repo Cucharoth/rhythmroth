@@ -43,17 +43,23 @@ const RecentlyPlayedTable = (props: { songs: Song[] }) => {
     );
 
     return (
-        <div className="container">
+        <div className="container border-l-8 bg-black rounded border-primary-200 bg-opacity-20 shadow-md shadow-background-400 decoration-background-200 backdrop-blur-sm overflow-auto">
             <Table
                 removeWrapper
                 classNames={
                     {
-                        th: "bg-transparent border-b h-6 text-primary-foreground",
-                        emptyWrapper: "text-black"
+                        th: "bg-transparent rounded border-b h-6 text-primary-foreground",
+                        emptyWrapper: "text-black",
+                        tbody: "rounded",
+                        tr: [],
+                        td: "",
+                        wrapper: "bg-opacity-0",
+                        base: [""]
                     }
                 }
                 selectionMode="single"
                 aria-label="recently played table"
+                
             >
                 <TableHeader>
                     <TableColumn key={"coverSrc"}>COVER</TableColumn>
@@ -70,6 +76,7 @@ const RecentlyPlayedTable = (props: { songs: Song[] }) => {
                             key={song.id}
                             className="cursor-pointer"
                             onClick={() => handleRowCLick(song)}
+                            
                         >
                             {(columnKey) => (
                                 <TableCell>

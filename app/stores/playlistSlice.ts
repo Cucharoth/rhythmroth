@@ -45,7 +45,6 @@ export const playlistSlice = createSlice({
             state.isPaused = action.payload;
         },
         resetPlaylist(state) {
-            console.log("playlist reset");
             state.playlist = playlist;
             state.currentSongPlaylistId = 1;
             state.selectedSongPlaylistId = 1;
@@ -53,27 +52,27 @@ export const playlistSlice = createSlice({
             state.isPaused = false;
         },
         setPlaylist(state, action: PayloadAction<Playlist>) {
-            console.log("payload playlist");
-            console.log(action.payload);
             state.playlist.id = action.payload.id;
             state.playlist.name = action.payload.name;
+            // adds a proper playlist ID to all the songs in the playlist 
             state.playlist.songs = action.payload.songs!.map(
                 (song: Song, index) => ({
                     ...song,
                     playlistId: index + 2,
                 })
             );
-            console.log("state playlist");
-            console.log(state.playlist);
             state.newPlaylistState = true;
         },
         clearPlaylist(state) {
-            console.log("clear playlist")
             state.playlist = playlist;
         },
         setNewPlaylistState(state, action: PayloadAction<boolean>) {
             state.newPlaylistState = action.payload;
         },
+        updatePlaylist(state, action: PayloadAction<Playlist>) {
+            state.playlist.id = action.payload.id;
+            state.playlist.name = action.payload.name;
+        }
     },
 });
 
@@ -87,7 +86,8 @@ export const {
     resetPlaylist,
     setPlaylist,
     clearPlaylist,
-    setNewPlaylistState
+    setNewPlaylistState,
+    updatePlaylist
 } = playlistSlice.actions;
 
 export default playlistSlice.reducer;

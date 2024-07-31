@@ -2,26 +2,29 @@
 
 import { setUserPlaylist } from "@/app/stores/sessionSlice";
 import { useAppDispatch, useAppSelector } from "@/app/stores/store";
-import { Playlist, Song } from "@/app/types";
+import { Playlist } from "@/app/types";
 import ChangePlaylist from "@/components/ChangePlaylist";
-import playlist from "@/components/Playlist";
-import PlaylistTable from "@/components/PlaylistTable";
+import DeletePlaylist from "@/components/DeletePlaylist";
 import SongsTable from "@/components/SongsTable";
 import { faList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Autocomplete, AutocompleteItem, Avatar } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 
-const PlaylistPage = () => {
+const PlaylistPage = ({ params }: { params: { playlist: string } }) => {
     const [currentUserPlaylists, setCurrentUserPlaylists] = useState<
         Playlist[]
     >(useAppSelector((state) => state.session.user?.playlists!));
     const currentUser = useAppSelector((state) => state.session.user!);
     const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist>();
     const dispatch = useAppDispatch();
+    const userPlaylists = useAppSelector(
+        (state) => state.session.user?.playlists
+    );
+    const [inputValue, setInputValue] = useState<string>("");
 
     useEffect(() => {
-        if (currentUserPlaylists.length == 0 && currentUser.id != "") {
+        if (currentUser.id != "") {
             const fetchPlaylists = async () => {
                 try {
                     const response = await fetch(
@@ -59,18 +62,42 @@ const PlaylistPage = () => {
         setSelectedPlaylist(currentPlaylist);
     };
 
+    // keeps currentUserPlaylists updated
+    useEffect(() => {
+        if (!params.playlist[1] && currentUser.id != '') {
+            setCurrentUserPlaylists(userPlaylists!);
+            setSelectedPlaylist(userPlaylists![0]);
+            setInputValue(userPlaylists![0].name);
+        }
+    }, [userPlaylists]);
+
+    // handles the redirect from /home
+    useEffect(() => {
+        if (params.playlist) {
+            // handle params as an array since is 'catch-all'
+            const newSelectedPlaylist = userPlaylists?.find(
+                (playlist) => playlist.id == params.playlist[1]
+            )!;
+            if (newSelectedPlaylist) {
+                setSelectedPlaylist(newSelectedPlaylist);
+                setInputValue(newSelectedPlaylist.name);
+            }
+        }
+    }, []);
+
     return (
         <div>
-            <div className="flex justify-start mb-5 mr-10">
+            <div className="flex justify-start mb-5">
                 <div>
                     <Autocomplete
                         onSelectionChange={handleSelected}
+                        defaultInputValue={inputValue}
                         classNames={{
                             base: "text-black max-w-xs",
                             listboxWrapper: "max-h-[320px]",
                             selectorButton: "text-default-500",
                         }}
-                        defaultItems={currentUserPlaylists}
+                        items={currentUserPlaylists}
                         inputProps={{
                             classNames: {
                                 input: "ml-1 placeholder:text-black",
@@ -147,11 +174,18 @@ const PlaylistPage = () => {
                         )}
                     </Autocomplete>
                 </div>
-                <div className="flex items-center ml-10 transition-all">
-                    {selectedPlaylist?.songs && selectedPlaylist.songs.length > 0 && (
-                        <ChangePlaylist playlist={selectedPlaylist}/>
-                    )}
+                <div className="flex grow justify-between items-center ml-10 transition-all">
+                    {selectedPlaylist?.songs &&
+                        selectedPlaylist.songs.length > 0 && (
+                            <>
+                                <ChangePlaylist playlist={selectedPlaylist} />
+                                <DeletePlaylist playlist={selectedPlaylist} />
+                            </>
+                        )}
                 </div>
+            </div>
+            <div className="min-h-[30px] mb-3 border-b">
+                {selectedPlaylist?.name}
             </div>
             {selectedPlaylist?.songs && selectedPlaylist.songs.length > 0 && (
                 <SongsTable songs={selectedPlaylist?.songs} />
